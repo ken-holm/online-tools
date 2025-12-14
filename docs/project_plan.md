@@ -26,7 +26,7 @@
 *   Simple Calculator (Completed)
 *   Daily Counter (Completed)
 
-## 6. Monetization (In Progress)
+## 6. Monetization (Completed)
 *   "Buy me a Coffee" button.
 *   Affiliate links in footer.
 
