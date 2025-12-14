@@ -4,7 +4,8 @@ import Clock from './components/tools/Clock';
 import Countdown from './components/tools/Countdown';
 import Timer from './components/tools/Timer';
 import Message from './components/tools/Message';
-import Stopwatch from './components/tools/Stopwatch'; // Import the new Stopwatch component
+import Stopwatch from './components/tools/Stopwatch';
+import Breathing from './components/tools/Breathing'; // Import the new Breathing component
 
 const NotFound = () => (
   <div className="text-center text-red-500 text-3xl font-bold">404 - Page Not Found</div>
@@ -25,7 +26,8 @@ function App() {
           <Route path="countdown" element={<Countdown />} />
           <Route path="timer" element={<Timer />} />
           <Route path="message" element={<Message />} />
-          <Route path="stopwatch" element={<Stopwatch />} /> {/* New Stopwatch Route */}
+          <Route path="stopwatch" element={<Stopwatch />} />
+          <Route path="breathing" element={<Breathing />} /> {/* New Breathing Route */}
           {/* Future tools will have their routes here */}
           <Route path="*" element={<NotFound />} />
         </Route>
