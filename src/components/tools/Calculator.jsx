@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { useTheme } from '../../context/ThemeContext';
+import SEO from '../SEO';
 
 const Calculator = () => {
   const { theme } = useTheme();
@@ -133,6 +134,11 @@ const Calculator = () => {
 
   return (
     <div className={`flex flex-col items-center justify-center min-h-full p-4 ${theme.font}`}>
+      <SEO 
+        title="Simple Calculator" 
+        description="A handy online calculator for basic arithmetic. Features a clean interface and keyboard support."
+        keywords="calculator, online calculator, simple calculator, math tool, arithmetic"
+      />
       <h2 className="text-4xl md:text-6xl font-semibold text-white/90 mb-8 drop-shadow-md text-center">
         Simple Calculator
       </h2>

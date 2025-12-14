@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useTheme } from '../../context/ThemeContext';
 import { Play, Pause, RotateCcw, Settings, Type, MoveVertical, FlipHorizontal } from 'lucide-react';
+import SEO from '../SEO';
 
 const Prompter = () => {
   const { theme } = useTheme();
@@ -49,10 +50,16 @@ const Prompter = () => {
   };
 
   return (
-    <div className={`flex flex-col items-center justify-center min-h-full w-full ${theme.font} h-screen overflow-hidden`}> 
+    <div className={`flex flex-col items-center justify-center min-h-full w-full ${theme.font} h-screen overflow-hidden`}>
+      <SEO 
+        title="Teleprompter" 
+        description="A free online teleprompter with scrolling text, adjustable speed, font size control, and mirror mode."
+        keywords="teleprompter, online prompter, scrolling text, speech practice, mirror text"
+      />
       
       {/* Editor / Prompter View Switch */}
       {isEditing ? (
+
         <div className="flex flex-col items-center justify-center w-full max-w-4xl p-6 h-full">
           <h2 className="text-3xl font-bold text-white mb-6">Teleprompter Setup</h2>
           <textarea

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import SEO from '../SEO';
 
 const Clock = () => {
   const [time, setTime] = useState(new Date());
@@ -39,13 +40,19 @@ const Clock = () => {
   const { timeStr, ampm } = formatTime(time);
 
   return (
-    <div 
-      className={`flex flex-col items-center justify-center transition-all duration-500 cursor-pointer ${
-        isExpanded ? 'scale-150' : 'scale-100'
-      }`}
-      onClick={() => setIsExpanded(!isExpanded)}
-      title="Click to expand/shrink"
-    >
+    <>
+      <SEO 
+        title="Current Time" 
+        description="A large, customizable digital clock displaying the current time and date. Perfect for full-screen display."
+        keywords="clock, online clock, digital clock, current time, time, date"
+      />
+      <div 
+        className={`flex flex-col items-center justify-center transition-all duration-500 cursor-pointer ${
+          isExpanded ? 'scale-150' : 'scale-100'
+        }`}
+        onClick={() => setIsExpanded(!isExpanded)}
+        title="Click to expand/shrink"
+      >
       <div className="relative group">
         <h2 className={`font-bold tabular-nums leading-none tracking-tight text-white drop-shadow-lg ${
           isExpanded ? 'text-[15vw]' : 'text-[12vw] sm:text-[10vw]'

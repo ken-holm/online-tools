@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useTheme } from '../../context/ThemeContext';
 import { Plus, Minus, Trash2, RotateCcw, Check, X } from 'lucide-react';
+import SEO from '../SEO';
 
 const Counter = () => {
   const { theme } = useTheme();
@@ -37,6 +38,11 @@ const Counter = () => {
 
   return (
     <div className={`flex flex-col items-center justify-start min-h-full p-8 w-full max-w-4xl mx-auto ${theme.font}`}>
+      <SEO 
+        title="Daily Counter" 
+        description="Track your daily habits, tasks, or items with this simple online tally counter. Add multiple counters and reset them easily."
+        keywords="tally counter, daily counter, habit tracker, clicker, online counter"
+      />
       <h2 className="text-3xl md:text-5xl font-semibold text-white/90 mb-8 drop-shadow-md">
         Daily Counters
       </h2>

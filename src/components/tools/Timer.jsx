@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useTheme } from '../../context/ThemeContext';
 import { Play, Pause, RotateCcw } from 'lucide-react';
 import useAlarm from '../../hooks/useAlarm';
+import SEO from '../SEO';
 
 const Timer = () => {
   const { theme } = useTheme();
@@ -75,6 +76,11 @@ const Timer = () => {
 
   return (
     <div className={`flex flex-col items-center justify-center min-h-full p-4 ${theme.font} transition-all duration-300 ${isExpanded ? 'scale-105' : 'scale-100'}`}>
+      <SEO 
+        title="Timer" 
+        description="A simple, clean online timer with custom duration, audio alarm, and browser notifications."
+        keywords="timer, countdown, online timer, alarm, stopwatch"
+      />
       <h2 className={`text-4xl md:text-6xl font-semibold text-white/90 mb-8 drop-shadow-md text-center transition-all duration-300 ${isExpanded ? 'opacity-0 h-0 overflow-hidden' : 'opacity-100'}`}>
         Timer
       </h2>

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useTheme } from '../../context/ThemeContext';
 import { Play, Pause, RotateCcw } from 'lucide-react';
+import SEO from '../SEO';
 
 const Breathing = () => {
   const { theme } = useTheme();
@@ -81,6 +82,11 @@ const Breathing = () => {
 
   return (
     <div className={`flex flex-col items-center justify-center min-h-full p-4 ${theme.font} transition-all duration-300 ${isExpanded ? 'scale-105' : 'scale-100'}`}>
+      <SEO 
+        title="Breathing Exercise" 
+        description="Relax with the 4-7-8 breathing technique. A visual guide for inhaling, holding, and exhaling to reduce stress."
+        keywords="breathing exercise, 4-7-8 breathing, relaxation, meditation, stress relief"
+      />
       
       {/* Title / Instruction */}
       <h2 className={`text-3xl md:text-5xl font-semibold text-white/90 mb-8 drop-shadow-md text-center transition-all duration-300 ${isExpanded ? 'opacity-0 h-0 overflow-hidden' : 'opacity-100'}`}>

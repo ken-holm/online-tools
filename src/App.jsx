@@ -22,12 +22,7 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Layout />}>
-          <Route index element={
-            <div className="flex flex-col items-center justify-center h-full text-white">
-              <h2 className="text-4xl font-bold mb-4">Welcome to tools.holmcc.com!</h2>
-              <p className="text-xl mb-8">Select a tool from the navigation above.</p>
-            </div>
-          } />
+          <Route index element={<Clock />} />
           <Route path="clock" element={<Clock />} />
           <Route path="countdown" element={<Countdown />} />
           <Route path="timer" element={<Timer />} />

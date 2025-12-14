@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useTheme } from '../../context/ThemeContext';
 import { Edit2, Check } from 'lucide-react';
+import SEO from '../SEO';
 
 const Message = () => {
   const { theme } = useTheme();
@@ -40,6 +41,11 @@ const Message = () => {
 
   return (
     <div className={`flex flex-col items-center justify-center min-h-full p-4 w-full ${theme.font} transition-all duration-300 ${isExpanded ? 'scale-105' : 'scale-100'}`}>
+      <SEO 
+        title="Message Board" 
+        description="A simple digital billboard. Display large, high-contrast messages on your screen. Useful for 'Be Right Back' or announcements."
+        keywords="message board, digital billboard, full screen text, display message, sign"
+      />
       
       {/* Display Mode */}
       {!isEditing && (

@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useTheme } from '../../context/ThemeContext';
 import { Play, Pause, RotateCcw, Flag } from 'lucide-react';
+import SEO from '../SEO';
 
 const Stopwatch = () => {
   const { theme } = useTheme();
@@ -56,6 +57,11 @@ const Stopwatch = () => {
 
   return (
     <div className={`flex flex-col items-center justify-center min-h-full p-4 ${theme.font} transition-all duration-300 ${isExpanded ? 'scale-105' : 'scale-100'}`}>
+      <SEO 
+        title="Stopwatch" 
+        description="A precise online stopwatch with lap timing functionality. Ideal for sports, study, and timing tasks."
+        keywords="stopwatch, chronograph, online stopwatch, lap timer, timer"
+      />
       <h2 className={`text-4xl md:text-6xl font-semibold text-white/90 mb-8 drop-shadow-md text-center transition-all duration-300 ${isExpanded ? 'opacity-0 h-0 overflow-hidden' : 'opacity-100'}`}>
         Stopwatch
       </h2>

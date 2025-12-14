@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { useTheme } from '../../context/ThemeContext';
 import { Play, Pause, Plus, Minus } from 'lucide-react';
+import SEO from '../SEO';
 
 // Web Audio API context reference
 let audioContext = null;
@@ -112,6 +113,11 @@ const Metronome = () => {
 
   return (
     <div className={`flex flex-col items-center justify-center min-h-full p-4 ${theme.font} transition-all duration-300 ${isExpanded ? 'scale-105' : 'scale-100'}`}>
+      <SEO 
+        title="Metronome" 
+        description="A simple, accurate online metronome. Adjustable BPM, visual pulse, and audio click for musicians and practice."
+        keywords="metronome, online metronome, bpm counter, tempo, music practice"
+      />
       <h2 className={`text-4xl md:text-6xl font-semibold text-white/90 mb-8 drop-shadow-md text-center transition-all duration-300 ${isExpanded ? 'opacity-0 h-0 overflow-hidden' : 'opacity-100'}`}>
         Metronome
       </h2>

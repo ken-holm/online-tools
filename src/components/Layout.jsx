@@ -55,18 +55,18 @@ const Layout = () => {
             }`}
           >
             <nav className="flex flex-col p-2 max-h-[80vh] overflow-y-auto">
+              <Link to="/breathing" className="px-4 py-3 hover:bg-white/10 rounded-lg text-sm font-medium transition-colors">Breathing</Link>
+              <Link to="/calculator" className="px-4 py-3 hover:bg-white/10 rounded-lg text-sm font-medium transition-colors">Calculator</Link>
               <Link to="/clock" className="px-4 py-3 hover:bg-white/10 rounded-lg text-sm font-medium transition-colors">Clock</Link>
               <Link to="/countdown" className="px-4 py-3 hover:bg-white/10 rounded-lg text-sm font-medium transition-colors">Countdown</Link>
-              <Link to="/timer" className="px-4 py-3 hover:bg-white/10 rounded-lg text-sm font-medium transition-colors">Timer</Link>
-              <Link to="/pomodoro" className="px-4 py-3 hover:bg-white/10 rounded-lg text-sm font-medium transition-colors">Pomodoro</Link>
-              <Link to="/world-clock" className="px-4 py-3 hover:bg-white/10 rounded-lg text-sm font-medium transition-colors">World Clock</Link>
-              <Link to="/metronome" className="px-4 py-3 hover:bg-white/10 rounded-lg text-sm font-medium transition-colors">Metronome</Link>
-              <Link to="/stopwatch" className="px-4 py-3 hover:bg-white/10 rounded-lg text-sm font-medium transition-colors">Stopwatch</Link>
-              <Link to="/calculator" className="px-4 py-3 hover:bg-white/10 rounded-lg text-sm font-medium transition-colors">Calculator</Link>
-              <Link to="/prompter" className="px-4 py-3 hover:bg-white/10 rounded-lg text-sm font-medium transition-colors">Prompter</Link>
-              <Link to="/message" className="px-4 py-3 hover:bg-white/10 rounded-lg text-sm font-medium transition-colors">Message</Link>
-              <Link to="/breathing" className="px-4 py-3 hover:bg-white/10 rounded-lg text-sm font-medium transition-colors">Breathing</Link>
               <Link to="/counter" className="px-4 py-3 hover:bg-white/10 rounded-lg text-sm font-medium transition-colors">Counter</Link>
+              <Link to="/message" className="px-4 py-3 hover:bg-white/10 rounded-lg text-sm font-medium transition-colors">Message</Link>
+              <Link to="/metronome" className="px-4 py-3 hover:bg-white/10 rounded-lg text-sm font-medium transition-colors">Metronome</Link>
+              <Link to="/pomodoro" className="px-4 py-3 hover:bg-white/10 rounded-lg text-sm font-medium transition-colors">Pomodoro</Link>
+              <Link to="/prompter" className="px-4 py-3 hover:bg-white/10 rounded-lg text-sm font-medium transition-colors">Prompter</Link>
+              <Link to="/stopwatch" className="px-4 py-3 hover:bg-white/10 rounded-lg text-sm font-medium transition-colors">Stopwatch</Link>
+              <Link to="/timer" className="px-4 py-3 hover:bg-white/10 rounded-lg text-sm font-medium transition-colors">Timer</Link>
+              <Link to="/world-clock" className="px-4 py-3 hover:bg-white/10 rounded-lg text-sm font-medium transition-colors">World Clock</Link>
               
               <div className="h-px bg-white/10 my-2"></div>
               

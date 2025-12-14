@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useTheme } from '../../context/ThemeContext';
 import { Plus, X, Globe, Edit2, Check } from 'lucide-react';
+import SEO from '../SEO';
 
 const COMMON_TIMEZONES = [
   { label: 'UTC', value: 'UTC' },
@@ -116,6 +117,11 @@ const WorldClock = () => {
 
   return (
     <div className={`flex flex-col items-center justify-start min-h-full p-8 w-full max-w-6xl mx-auto ${theme.font}`}>
+      <SEO 
+        title="World Clock" 
+        description="Track current local time across multiple timezones. Customize labels and add your favorite cities."
+        keywords="world clock, timezone converter, international time, online clock, local time"
+      />
       <h2 className="text-3xl md:text-5xl font-semibold text-white/90 mb-8 drop-shadow-md flex items-center gap-3">
         <Globe size={40} className="text-blue-400" />
         World Clock

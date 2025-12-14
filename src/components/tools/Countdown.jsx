@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useTheme } from '../../context/ThemeContext';
 import useAlarm from '../../hooks/useAlarm';
+import SEO from '../SEO';
 
 const Countdown = () => {
   const { theme } = useTheme();
@@ -100,6 +101,11 @@ const Countdown = () => {
     <div 
       className={`flex flex-col items-center justify-center min-h-full p-4 ${theme.font} transition-all duration-300 ${isExpanded ? 'scale-105' : 'scale-100'}`}
     >
+      <SEO 
+        title="Countdown Timer" 
+        description="Create a custom countdown timer for your important events. Features audio alerts and full-screen mode."
+        keywords="countdown, timer, event timer, alarm, online countdown"
+      />
       <h2 
         className={`font-semibold text-white/90 drop-shadow-md text-center transition-all duration-300 ${isExpanded ? 'text-4xl md:text-6xl mb-8' : 'text-2xl md:text-4xl mb-6'}`}
       >

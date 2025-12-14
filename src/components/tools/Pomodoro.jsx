@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useTheme } from '../../context/ThemeContext';
 import useAlarm from '../../hooks/useAlarm';
 import { Play, Pause, RotateCcw, FastForward } from 'lucide-react';
+import SEO from '../SEO';
 
 const WORK_TIME = 25 * 60; // 25 minutes
 const SHORT_BREAK_TIME = 5 * 60; // 5 minutes
@@ -105,6 +106,11 @@ const Pomodoro = () => {
 
   return (
     <div className={`flex flex-col items-center justify-center min-h-full p-4 ${theme.font} transition-all duration-300 ${isExpanded ? 'scale-105' : 'scale-100'}`}>
+      <SEO 
+        title="Pomodoro Timer" 
+        description="Boost your productivity with this customizable Pomodoro timer. Track work sessions, short breaks, and long breaks."
+        keywords="pomodoro, tomato timer, productivity, focus, work timer"
+      />
       <h2 className={`text-4xl md:text-6xl font-semibold text-white/90 mb-6 drop-shadow-md text-center transition-all duration-300 ${isExpanded ? 'opacity-0 h-0 overflow-hidden' : 'opacity-100'}`}>
         Pomodoro Timer
       </h2>
