@@ -6,7 +6,8 @@ import Timer from './components/tools/Timer';
 import Message from './components/tools/Message';
 import Stopwatch from './components/tools/Stopwatch';
 import Breathing from './components/tools/Breathing';
-import Pomodoro from './components/tools/Pomodoro'; // Import the new Pomodoro component
+import Pomodoro from './components/tools/Pomodoro';
+import WorldClock from './components/tools/WorldClock'; // Import the new WorldClock component
 
 const NotFound = () => (
   <div className="text-center text-red-500 text-3xl font-bold">404 - Page Not Found</div>
@@ -29,7 +30,8 @@ function App() {
           <Route path="message" element={<Message />} />
           <Route path="stopwatch" element={<Stopwatch />} />
           <Route path="breathing" element={<Breathing />} />
-          <Route path="pomodoro" element={<Pomodoro />} /> {/* New Pomodoro Route */}
+          <Route path="pomodoro" element={<Pomodoro />} />
+          <Route path="world-clock" element={<WorldClock />} /> {/* New World Clock Route */}
           {/* Future tools will have their routes here */}
           <Route path="*" element={<NotFound />} />
         </Route>

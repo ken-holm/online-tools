@@ -51,6 +51,11 @@ const Layout = () => {
                 Pomodoro
               </Link>
             </li>
+            <li>
+              <Link to="/world-clock" className="text-white/70 hover:text-white transition-colors text-sm font-medium uppercase tracking-wider">
+                World Clock
+              </Link>
+            </li>
             {/* Future tools will go here */}
           </ul>
           <button 
