@@ -23,10 +23,12 @@
 *   Metronome (Completed)
 *   Breathing Box (Completed)
 *   Prompter (Completed)
-*   Daily Counter (In Progress)
-*   Stopwatch (Completed)
-*   World Clock (Completed)
 *   Simple Calculator (Completed)
+*   Daily Counter (Completed)
+
+## 6. Monetization (In Progress)
+*   "Buy me a Coffee" button.
+*   Affiliate links in footer.
 
 ## 5. Directory Structure
 *   `docs/` - All documentation (except README.md).
