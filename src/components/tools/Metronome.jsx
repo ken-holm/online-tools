@@ -4,48 +4,29 @@ import { Play, Pause, Plus, Minus } from 'lucide-react';
 
 // Web Audio API context reference
 let audioContext = null;
-let oscGain = null;
-let accentGain = null;
-let clickGain = null;
+let clickGain = null; // Single gain for all clicks
 
 const initAudioContext = () => {
   if (!audioContext) {
     audioContext = new (window.AudioContext || window.webkitAudioContext)();
     
     // Master gain for metronome sounds
-    oscGain = audioContext.createGain();
-    oscGain.gain.setValueAtTime(0, audioContext.currentTime); // Start silent
-    oscGain.connect(audioContext.destination);
-
-    // Accent beat gain
-    accentGain = audioContext.createGain();
-    accentGain.gain.setValueAtTime(0, audioContext.currentTime);
-    accentGain.connect(oscGain);
-
-    // Regular click gain
     clickGain = audioContext.createGain();
-    clickGain.gain.setValueAtTime(0, audioContext.currentTime);
-    clickGain.connect(oscGain);
+    clickGain.gain.setValueAtTime(0, audioContext.currentTime); // Start silent
+    clickGain.connect(audioContext.destination);
   }
 };
 
-const playClick = (time, isAccent = false) => {
+const playClick = (time) => {
   if (!audioContext) return;
 
   const osc = audioContext.createOscillator();
-  osc.type = 'sine'; // or 'triangle', 'square', 'sawtooth'
+  osc.type = 'sine';
+  osc.frequency.setValueAtTime(220, time); // A3 frequency
+  osc.connect(clickGain);
 
-  if (isAccent) {
-    osc.frequency.setValueAtTime(440, time); // A4
-    accentGain.gain.setValueAtTime(0.7, time);
-    accentGain.gain.exponentialRampToValueAtTime(0.001, time + 0.05);
-    osc.connect(accentGain);
-  } else {
-    osc.frequency.setValueAtTime(220, time); // A3
-    clickGain.gain.setValueAtTime(0.5, time);
-    clickGain.gain.exponentialRampToValueAtTime(0.001, time + 0.05);
-    osc.connect(clickGain);
-  }
+  clickGain.gain.setValueAtTime(0.5, time);
+  clickGain.gain.exponentialRampToValueAtTime(0.001, time + 0.05);
 
   osc.start(time);
   osc.stop(time + 0.05); // Short click
@@ -54,10 +35,7 @@ const playClick = (time, isAccent = false) => {
 const Metronome = () => {
   const { theme } = useTheme();
   const [bpm, setBpm] = useState(() => parseInt(localStorage.getItem('metronomeBPM')) || 120);
-  const [timeSignatureNumerator, setTimeSignatureNumerator] = useState(() => parseInt(localStorage.getItem('metronomeTimeSignatureNumerator')) || 4);
-  const [timeSignatureDenominator, setTimeSignatureDenominator] = useState(() => parseInt(localStorage.getItem('metronomeTimeSignatureDenominator')) || 4);
   const [isRunning, setIsRunning] = useState(false);
-  const [currentBeat, setCurrentBeat] = useState(0); // 0-indexed beat within the measure
   const [isBeatHighlight, setIsBeatHighlight] = useState(false);
 
   const schedulerRef = useRef(null);
@@ -67,7 +45,6 @@ const Metronome = () => {
   useEffect(() => {
     const handleFirstInteraction = () => {
       initAudioContext();
-      // Resume audio context if it was suspended
       if (audioContext && audioContext.state === 'suspended') {
         audioContext.resume();
       }
@@ -84,9 +61,7 @@ const Metronome = () => {
 
   useEffect(() => {
     localStorage.setItem('metronomeBPM', bpm.toString());
-    localStorage.setItem('metronomeTimeSignatureNumerator', timeSignatureNumerator.toString());
-    localStorage.setItem('metronomeTimeSignatureDenominator', timeSignatureDenominator.toString());
-  }, [bpm, timeSignatureNumerator, timeSignatureDenominator]);
+  }, [bpm]);
 
   const scheduleBeat = useCallback(() => {
     if (!audioContext || !isRunning) return;
@@ -96,14 +71,10 @@ const Metronome = () => {
     const scheduleAheadTime = 0.2; // How far ahead to schedule audio (sec)
 
     while (nextBeatTimeRef.current < audioContext.currentTime + scheduleAheadTime) {
-      const beat = (currentBeat % timeSignatureNumerator);
-      const isAccent = beat === 0;
-      playClick(nextBeatTimeRef.current, isAccent);
+      playClick(nextBeatTimeRef.current); // No accent
       
-      // Update visual state (React state updates are asynchronous, so we'll schedule it)
       const visualHighlightTime = (nextBeatTimeRef.current - audioContext.currentTime) * 1000;
       setTimeout(() => {
-        setCurrentBeat((prev) => (prev + 1) % timeSignatureNumerator);
         setIsBeatHighlight(true);
         setTimeout(() => setIsBeatHighlight(false), 100); // Highlight for 100ms
       }, visualHighlightTime);
@@ -112,7 +83,7 @@ const Metronome = () => {
     }
 
     schedulerRef.current = setTimeout(scheduleBeat, lookahead * 1000);
-  }, [bpm, timeSignatureNumerator, isRunning, currentBeat]); // Add currentBeat to dependencies
+  }, [bpm, isRunning]);
 
   useEffect(() => {
     if (isRunning) {
@@ -120,7 +91,6 @@ const Metronome = () => {
         audioContext.resume();
       }
       nextBeatTimeRef.current = audioContext.currentTime + 0.1; // Schedule first beat slightly in future
-      setCurrentBeat(0); // Reset beat count when starting
       scheduleBeat();
     } else {
       clearTimeout(schedulerRef.current);
@@ -158,7 +128,7 @@ const Metronome = () => {
         ></div>
 
         <div className={`w-64 h-64 md:w-80 md:h-80 rounded-full border-4 ${isBeatHighlight ? 'border-blue-400' : 'border-white/20'} bg-gradient-to-br from-gray-700/50 to-gray-800/50 backdrop-blur-sm flex items-center justify-center shadow-2xl transition-all duration-100`}>
-          <span className={`text-8xl md:text-9xl font-bold tabular-nums text-white drop-shadow-lg ${currentBeat === 0 ? 'text-blue-300' : ''}`}>
+          <span className={`text-8xl md:text-9xl font-bold tabular-nums text-white drop-shadow-lg`}>
             {bpm}
           </span>
         </div>
@@ -202,41 +172,6 @@ const Metronome = () => {
         >
           <Plus size={24} />
         </button>
-      </div>
-      
-      <div className={`mt-8 text-white/70 text-lg transition-opacity duration-300 ${isExpanded ? 'opacity-0' : 'opacity-100'}`}>
-        Time Signature: {timeSignatureNumerator}/{timeSignatureDenominator}
-      </div>
-
-      {/* Basic Time Signature Controls */}
-      <div className={`mt-4 flex space-x-4 transition-opacity duration-300 ${isExpanded ? 'opacity-0 pointer-events-none' : 'opacity-100'}`}>
-        <div className="flex items-center space-x-2">
-          <label htmlFor="numerator" className="text-white/70">Beats:</label>
-          <input
-            id="numerator"
-            type="number"
-            min="1"
-            max="16"
-            value={timeSignatureNumerator}
-            onChange={(e) => setTimeSignatureNumerator(parseInt(e.target.value))}
-            className="w-16 p-2 rounded bg-gray-700 border border-gray-600 text-white text-center focus:outline-none focus:border-blue-500"
-          />
-        </div>
-        <div className="flex items-center space-x-2">
-          <label htmlFor="denominator" className="text-white/70">Note:</label>
-          <select
-            id="denominator"
-            value={timeSignatureDenominator}
-            onChange={(e) => setTimeSignatureDenominator(parseInt(e.target.value))}
-            className="p-2 rounded bg-gray-700 border border-gray-600 text-white focus:outline-none focus:border-blue-500"
-          >
-            <option value="1">Whole</option>
-            <option value="2">Half</option>
-            <option value="4">Quarter</option>
-            <option value="8">Eighth</option>
-            <option value="16">Sixteenth</option>
-          </select>
-        </div>
       </div>
     </div>
   );
