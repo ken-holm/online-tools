@@ -11,7 +11,7 @@
 1.  **Current Time:** Digital display, 12/24h, Date. (Completed)
 2.  **Countdown Timer:** Target date/time, visual progress. (In Progress)
 3.  **Timer:** Standard countdown with alarm. (Completed)
-4.  **Message Tab:** Large text display ("Billboard" mode). (In Progress)
+4.  **Message Tab:** Large text display ("Billboard" mode). (Completed)
 
 ## 3. Monetization (Low Conversion)
 *   "Buy me a Coffee" button.

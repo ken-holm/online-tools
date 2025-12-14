@@ -2,7 +2,8 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Layout from './components/Layout';
 import Clock from './components/tools/Clock';
 import Countdown from './components/tools/Countdown';
-import Timer from './components/tools/Timer'; // Import the new Timer component
+import Timer from './components/tools/Timer';
+import Message from './components/tools/Message'; // Import the new Message component
 
 const NotFound = () => (
   <div className="text-center text-red-500 text-3xl font-bold">404 - Page Not Found</div>
@@ -21,7 +22,8 @@ function App() {
           } />
           <Route path="clock" element={<Clock />} />
           <Route path="countdown" element={<Countdown />} />
-          <Route path="timer" element={<Timer />} /> {/* New Timer Route */}
+          <Route path="timer" element={<Timer />} />
+          <Route path="message" element={<Message />} /> {/* New Message Route */}
           {/* Future tools will have their routes here */}
           <Route path="*" element={<NotFound />} />
         </Route>
