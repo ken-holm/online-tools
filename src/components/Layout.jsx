@@ -46,6 +46,11 @@ const Layout = () => {
                 Breathing
               </Link>
             </li>
+            <li>
+              <Link to="/pomodoro" className="text-white/70 hover:text-white transition-colors text-sm font-medium uppercase tracking-wider">
+                Pomodoro
+              </Link>
+            </li>
             {/* Future tools will go here */}
           </ul>
           <button 
