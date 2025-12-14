@@ -90,39 +90,3 @@ const Clock = () => {
 };
 
 export default Clock;
-      <div className="relative group">
-        <h2 className={`font-bold tabular-nums leading-none tracking-tight text-white drop-shadow-lg ${
-          isExpanded ? 'text-[15vw]' : 'text-[12vw] sm:text-[10vw]'
-        }`}>
-          {timeStr}
-          {!is24HourFormat && (
-            <span className="text-[0.3em] ml-4 font-light text-white/60">{ampm}</span>
-          )}
-        </h2>
-      </div>
-
-      <p className={`text-white/80 font-medium tracking-wide drop-shadow-md mt-4 transition-opacity duration-300 ${
-        isExpanded ? 'text-2xl opacity-50' : 'text-xl sm:text-2xl opacity-100'
-      }`}>
-        {formatDate(time)}
-      </p>
-
-      {/* Control visible only on hover/standard mode to keep it clean */}
-      <div 
-        className={`mt-12 transition-all duration-300 ${
-          isExpanded ? 'opacity-0 pointer-events-none' : 'opacity-0 group-hover:opacity-100'
-        }`}
-        onClick={(e) => e.stopPropagation()} // Prevent expansion when clicking toggle
-      >
-        <button
-          onClick={() => setIs24HourFormat(!is24HourFormat)}
-          className="px-6 py-2 rounded-full border border-white/20 bg-white/5 hover:bg-white/10 text-white/80 text-sm font-medium backdrop-blur-sm transition-colors"
-        >
-          Switch to {is24HourFormat ? '12-Hour' : '24-Hour'}
-        </button>
-      </div>
-    </div>
-  );
-};
-
-export default Clock;
