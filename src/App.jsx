@@ -8,7 +8,8 @@ import Stopwatch from './components/tools/Stopwatch';
 import Breathing from './components/tools/Breathing';
 import Pomodoro from './components/tools/Pomodoro';
 import WorldClock from './components/tools/WorldClock';
-import Metronome from './components/tools/Metronome'; // Import the new Metronome component
+import Metronome from './components/tools/Metronome';
+import Calculator from './components/tools/Calculator'; // Import the new Calculator component
 
 const NotFound = () => (
   <div className="text-center text-red-500 text-3xl font-bold">404 - Page Not Found</div>
@@ -33,7 +34,8 @@ function App() {
           <Route path="breathing" element={<Breathing />} />
           <Route path="pomodoro" element={<Pomodoro />} />
           <Route path="world-clock" element={<WorldClock />} />
-          <Route path="metronome" element={<Metronome />} /> {/* New Metronome Route */}
+          <Route path="metronome" element={<Metronome />} />
+          <Route path="calculator" element={<Calculator />} /> {/* New Calculator Route */}
           {/* Future tools will have their routes here */}
           <Route path="*" element={<NotFound />} />
         </Route>

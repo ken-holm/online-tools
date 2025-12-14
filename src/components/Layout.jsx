@@ -61,6 +61,11 @@ const Layout = () => {
                 Metronome
               </Link>
             </li>
+            <li>
+              <Link to="/calculator" className="text-white/70 hover:text-white transition-colors text-sm font-medium uppercase tracking-wider">
+                Calculator
+              </Link>
+            </li>
             {/* Future tools will go here */}
           </ul>
           <button 
