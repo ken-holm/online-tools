@@ -25,7 +25,7 @@
 *   Prompter
 *   Stopwatch (Completed)
 *   World Clock (Completed)
-*   Simple Calculator (In Progress)
+*   Simple Calculator (Completed)
 
 ## 5. Directory Structure
 *   `docs/` - All documentation (except README.md).
