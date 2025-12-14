@@ -20,11 +20,11 @@
 
 ## 4. Future Ideas
 *   Pomodoro Timer (Completed)
-*   Metronome
+*   Metronome (In Progress)
 *   Breathing Box (Completed)
 *   Prompter
 *   Stopwatch (Completed)
-*   World Clock (In Progress)
+*   World Clock (Completed)
 
 ## 5. Directory Structure
 *   `docs/` - All documentation (except README.md).
