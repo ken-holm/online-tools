@@ -17,13 +17,13 @@ const Settings = ({ isOpen, onClose }) => {
   ];
 
   const fonts = [
-    { name: 'Modern (Inter)', class: 'font-sans' },
-    { name: 'Code (Mono)', class: 'font-mono' },
-    { name: 'Classic (Serif)', class: 'font-serif' },
+    { name: 'Modern', class: 'font-sans' },
+    { name: 'Code', class: 'font-mono' },
+    { name: 'Classic', class: 'font-serif' },
   ];
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
+    <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black bg-opacity-50 backdrop-blur-sm">
       <div className="bg-gray-800 text-white rounded-2xl shadow-2xl w-full max-w-md p-6 relative border border-gray-700">
         <button 
           onClick={onClose}
@@ -36,16 +36,18 @@ const Settings = ({ isOpen, onClose }) => {
 
         <div className="mb-6">
           <h3 className="text-lg font-semibold mb-3 text-gray-300">Background</h3>
-          <div className="grid grid-cols-3 gap-2">
+          <div className="grid grid-cols-3 gap-3">
             {gradients.map((g) => (
               <button
                 key={g.name}
                 onClick={() => updateBackground(g.class)}
-                className={`h-12 rounded-lg ${g.class} border-2 transition-all ${
+                className={`h-12 rounded-lg ${g.class} border-2 transition-all flex items-center justify-center text-xs font-medium shadow-sm ${
                   theme.background === g.class ? 'border-white scale-105' : 'border-transparent hover:border-gray-500'
                 }`}
                 title={g.name}
-              />
+              >
+                {/* Optional: Add text if gradients fail to render, though they should work */}
+              </button>
             ))}
           </div>
         </div>
@@ -57,13 +59,14 @@ const Settings = ({ isOpen, onClose }) => {
               <button
                 key={f.name}
                 onClick={() => updateFont(f.class)}
-                className={`px-4 py-3 rounded-lg text-left border transition-all ${
+                className={`px-4 py-3 rounded-lg text-left border transition-all flex justify-between items-center ${
                   theme.font === f.class 
                     ? 'bg-gray-700 border-blue-500 text-white' 
                     : 'bg-gray-900 border-gray-700 text-gray-400 hover:bg-gray-700'
                 } ${f.class}`}
               >
-                {f.name}
+                <span>{f.name}</span>
+                {theme.font === f.class && <span className="text-blue-400 text-sm">Active</span>}
               </button>
             ))}
           </div>
