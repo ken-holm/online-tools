@@ -1,29 +1,50 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Outlet, Link } from 'react-router-dom';
+import { useTheme } from '../context/ThemeContext';
+import { Settings as SettingsIcon } from 'lucide-react';
+import Settings from './Settings';
 
 const Layout = () => {
+  const { theme } = useTheme();
+  const [isSettingsOpen, setIsSettingsOpen] = useState(false);
+
   return (
-    <div className="min-h-screen bg-gray-900 text-white flex flex-col">
-      <header className="p-4 bg-gray-800 shadow-md flex justify-between items-center">
-        <h1 className="text-3xl font-bold text-blue-400">tools.holmcc.com</h1>
-        <nav>
-          <ul className="flex space-x-4">
+    <div className={`min-h-screen text-white flex flex-col transition-colors duration-500 ${theme.background} ${theme.font}`}>
+      <header className="fixed top-0 left-0 right-0 z-40 px-6 py-4 flex justify-between items-center bg-black/20 backdrop-blur-md border-b border-white/10">
+        <h1 className="text-2xl font-bold tracking-tight text-white/90 hover:text-white transition-colors">
+          <Link to="/">tools.holmcc.com</Link>
+        </h1>
+        <nav className="flex items-center space-x-6">
+          <ul className="flex space-x-6">
             <li>
-              <Link to="/clock" className="text-lg text-blue-300 hover:text-blue-500 transition-colors">
+              <Link to="/clock" className="text-white/70 hover:text-white transition-colors text-sm font-medium uppercase tracking-wider">
                 Clock
               </Link>
             </li>
             {/* Future tools will go here */}
           </ul>
+          <button 
+            onClick={() => setIsSettingsOpen(true)}
+            className="text-white/70 hover:text-white transition-colors p-2 rounded-full hover:bg-white/10"
+            aria-label="Settings"
+          >
+            <SettingsIcon size={20} />
+          </button>
         </nav>
       </header>
-      <main className="flex-grow flex items-center justify-center p-4">
+
+      {/* Spacer for fixed header */}
+      <div className="h-20"></div>
+
+      <main className="flex-grow flex items-center justify-center p-6 relative">
         <Outlet />
       </main>
-      <footer className="p-4 bg-gray-800 text-center text-gray-500 text-sm">
-        &copy; {new Date().getFullYear()} tools.holmcc.com. All rights reserved.
-        {/* Monetization button/link will go here */}
+
+      <footer className="py-6 text-center text-white/30 text-xs">
+        &copy; {new Date().getFullYear()} tools.holmcc.com
       </footer>
+
+      <Settings isOpen={isSettingsOpen} onClose={() => setIsSettingsOpen(false)} />
     </div>
   );
 };

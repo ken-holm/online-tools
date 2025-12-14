@@ -1,0 +1,76 @@
+import React from 'react';
+import { useTheme } from '../context/ThemeContext';
+import { X } from 'lucide-react';
+
+const Settings = ({ isOpen, onClose }) => {
+  const { theme, updateBackground, updateFont } = useTheme();
+
+  if (!isOpen) return null;
+
+  const gradients = [
+    { name: 'Midnight', class: 'bg-gradient-to-br from-gray-900 to-gray-800' },
+    { name: 'Slate', class: 'bg-gradient-to-br from-slate-900 to-slate-700' },
+    { name: 'Ocean', class: 'bg-gradient-to-br from-blue-900 to-cyan-900' },
+    { name: 'Forest', class: 'bg-gradient-to-br from-green-900 to-emerald-900' },
+    { name: 'Sunset', class: 'bg-gradient-to-br from-orange-900 to-red-900' },
+    { name: 'Berry', class: 'bg-gradient-to-br from-purple-900 to-pink-900' },
+  ];
+
+  const fonts = [
+    { name: 'Modern (Inter)', class: 'font-sans' },
+    { name: 'Code (Mono)', class: 'font-mono' },
+    { name: 'Classic (Serif)', class: 'font-serif' },
+  ];
+
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
+      <div className="bg-gray-800 text-white rounded-2xl shadow-2xl w-full max-w-md p-6 relative border border-gray-700">
+        <button 
+          onClick={onClose}
+          className="absolute top-4 right-4 text-gray-400 hover:text-white transition-colors"
+        >
+          <X size={24} />
+        </button>
+        
+        <h2 className="text-2xl font-bold mb-6">Settings</h2>
+
+        <div className="mb-6">
+          <h3 className="text-lg font-semibold mb-3 text-gray-300">Background</h3>
+          <div className="grid grid-cols-3 gap-2">
+            {gradients.map((g) => (
+              <button
+                key={g.name}
+                onClick={() => updateBackground(g.class)}
+                className={`h-12 rounded-lg ${g.class} border-2 transition-all ${
+                  theme.background === g.class ? 'border-white scale-105' : 'border-transparent hover:border-gray-500'
+                }`}
+                title={g.name}
+              />
+            ))}
+          </div>
+        </div>
+
+        <div>
+          <h3 className="text-lg font-semibold mb-3 text-gray-300">Typography</h3>
+          <div className="flex flex-col space-y-2">
+            {fonts.map((f) => (
+              <button
+                key={f.name}
+                onClick={() => updateFont(f.class)}
+                className={`px-4 py-3 rounded-lg text-left border transition-all ${
+                  theme.font === f.class 
+                    ? 'bg-gray-700 border-blue-500 text-white' 
+                    : 'bg-gray-900 border-gray-700 text-gray-400 hover:bg-gray-700'
+                } ${f.class}`}
+              >
+                {f.name}
+              </button>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default Settings;
