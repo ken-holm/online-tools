@@ -22,7 +22,7 @@
 *   Pomodoro Timer (Completed)
 *   Metronome (Completed)
 *   Breathing Box (Completed)
-*   Prompter
+*   Prompter (In Progress)
 *   Stopwatch (Completed)
 *   World Clock (Completed)
 *   Simple Calculator (Completed)
