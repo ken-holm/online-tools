@@ -22,6 +22,7 @@ const Countdown = () => {
   const [inputDate, setInputDate] = useState('');
   const [inputTime, setInputTime] = useState('');
   const [inputTitle, setInputTitle] = useState('');
+  const [isExpanded, setIsExpanded] = useState(false); // New state for expand feature
 
   const calculateTimeLeft = () => {
     const difference = +targetDate - +new Date();
@@ -67,10 +68,10 @@ const Countdown = () => {
     }
     timerComponents.push(
       <span key={interval} className="flex flex-col items-center mx-2 md:mx-4">
-        <span className="text-6xl md:text-8xl font-bold tabular-nums text-white">
+        <span className={`font-bold tabular-nums text-white leading-none ${isExpanded ? 'text-7xl md:text-9xl' : 'text-5xl md:text-7xl'}`}>
           {timeLeft[interval] < 10 ? '0' + timeLeft[interval] : timeLeft[interval]}
         </span>
-        <span className="text-lg md:text-2xl font-light text-white/70 uppercase">
+        <span className={`font-light text-white/70 uppercase ${isExpanded ? 'text-xl md:text-3xl' : 'text-lg md:text-2xl'}`}>
           {interval}
         </span>
       </span>
@@ -78,13 +79,21 @@ const Countdown = () => {
   });
 
   return (
-    <div className={`flex flex-col items-center justify-center min-h-full p-4 ${theme.font}`}>
-      <h2 className="text-3xl md:text-5xl font-semibold text-white/90 mb-8 drop-shadow-md text-center">
+    <div 
+      className={`flex flex-col items-center justify-center min-h-full p-4 ${theme.font} transition-all duration-300 ${isExpanded ? 'scale-105' : 'scale-100'}`}
+    >
+      <h2 
+        className={`font-semibold text-white/90 drop-shadow-md text-center transition-all duration-300 ${isExpanded ? 'text-4xl md:text-6xl mb-8' : 'text-2xl md:text-4xl mb-6'}`}
+      >
         {eventTitle}
       </h2>
 
       {timerComponents.length ? (
-        <div className="flex justify-center mb-8 flex-wrap">
+        <div 
+          className={`flex justify-center mb-8 flex-wrap cursor-pointer transition-all duration-300 ${isExpanded ? 'scale-105' : 'scale-100'}`}
+          onClick={() => setIsExpanded(!isExpanded)}
+          title="Click to expand/shrink"
+        >
           {timerComponents}
         </div>
       ) : (
@@ -92,22 +101,24 @@ const Countdown = () => {
       )}
 
       {!isEditing && (
-        <button
-          onClick={() => {
-            setIsEditing(true);
-            const yyyy = targetDate.getFullYear();
-            const mm = String(targetDate.getMonth() + 1).padStart(2, '0');
-            const dd = String(targetDate.getDate()).padStart(2, '0');
-            const hh = String(targetDate.getHours()).padStart(2, '0');
-            const min = String(targetDate.getMinutes()).padStart(2, '0');
-            setInputDate(`${yyyy}-${mm}-${dd}`);
-            setInputTime(`${hh}:${min}`);
-            setInputTitle(eventTitle);
-          }}
-          className="px-6 py-3 bg-blue-600 hover:bg-blue-700 rounded-lg shadow-md text-lg font-medium text-white transition-colors"
-        >
-          Set New Countdown
-        </button>
+        <div className={`mt-8 transition-opacity duration-300 ${isExpanded ? 'opacity-0 pointer-events-none' : 'opacity-100'}`}>
+          <button
+            onClick={() => {
+              setIsEditing(true);
+              const yyyy = targetDate.getFullYear();
+              const mm = String(targetDate.getMonth() + 1).padStart(2, '0');
+              const dd = String(targetDate.getDate()).padStart(2, '0');
+              const hh = String(targetDate.getHours()).padStart(2, '0');
+              const min = String(targetDate.getMinutes()).padStart(2, '0');
+              setInputDate(`${yyyy}-${mm}-${dd}`);
+              setInputTime(`${hh}:${min}`);
+              setInputTitle(eventTitle);
+            }}
+            className="px-6 py-3 bg-blue-600 hover:bg-blue-700 rounded-lg shadow-md text-lg font-medium text-white transition-colors"
+          >
+            Set New Countdown
+          </button>
+        </div>
       )}
 
       {isEditing && (
