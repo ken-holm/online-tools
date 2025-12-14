@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { useTheme } '../../context/ThemeContext';
+import { useTheme } from '../../context/ThemeContext';
 
 const Calculator = () => {
   const { theme } = useTheme();
