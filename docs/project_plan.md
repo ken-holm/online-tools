@@ -21,7 +21,7 @@
 ## 4. Future Ideas
 *   Pomodoro Timer
 *   Metronome
-*   Breathing Box
+*   Breathing Box (In Progress)
 *   Prompter
 *   Stopwatch (Completed)
 *   World Clock
