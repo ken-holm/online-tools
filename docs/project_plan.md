@@ -8,7 +8,7 @@
     *   *Note:* Requires `.htaccess` for client-side routing.
 
 ## 2. Initial Tool Set
-1.  **Current Time:** Digital display, 12/24h, Date.
+1.  **Current Time:** Digital display, 12/24h, Date. (Completed)
 2.  **Countdown Timer:** Target date/time, visual progress.
 3.  **Timer:** Standard countdown with alarm.
 4.  **Message Tab:** Large text display ("Billboard" mode).
