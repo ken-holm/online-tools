@@ -1,13 +1,17 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useTheme } from '../../context/ThemeContext';
 import { Play, Pause, RotateCcw } from 'lucide-react';
+import useAlarm from '../../hooks/useAlarm';
 
 const Timer = () => {
   const { theme } = useTheme();
+  const { triggerAlarm, requestNotificationPermission } = useAlarm();
+  
   const [duration, setDuration] = useState(() => {
     const savedDuration = localStorage.getItem('timerDuration');
     return savedDuration ? parseInt(savedDuration) : 600; // Default to 10 minutes (600 seconds)
   });
+  
   const [timeLeft, setTimeLeft] = useState(duration);
   const [isRunning, setIsRunning] = useState(false);
   const [isSetting, setIsSetting] = useState(false);
@@ -24,15 +28,19 @@ const Timer = () => {
       timerRef.current = setInterval(() => {
         setTimeLeft((prevTime) => prevTime - 1);
       }, 1000);
-    } else if (timeLeft === 0) {
+    } else if (timeLeft === 0 && isRunning) {
       setIsRunning(false);
-      // Optional: Play a sound or show an alert when timer finishes
+      triggerAlarm("Timer Finished", "Your timer has ended.");
+      clearInterval(timerRef.current);
     }
 
     return () => clearInterval(timerRef.current);
-  }, [isRunning, timeLeft]);
+  }, [isRunning, timeLeft, triggerAlarm]);
 
   const handleStartPause = () => {
+    if (!isRunning) {
+      requestNotificationPermission(); // Request permission on start
+    }
     setIsRunning((prev) => !prev);
   };
 
@@ -50,6 +58,7 @@ const Timer = () => {
       setIsSetting(false);
       setIsRunning(false);
       clearInterval(timerRef.current);
+      requestNotificationPermission(); // Request permission when setting duration
     } else {
       alert('Duration must be greater than 0.');
     }

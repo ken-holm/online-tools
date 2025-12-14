@@ -1,28 +1,33 @@
-import React, { useState, useEffect } from 'react';
-import { useTheme } from '../../context/ThemeContext'; // For font classes
+import React, { useState, useEffect, useRef } from 'react';
+import { useTheme } from '../../context/ThemeContext';
+import useAlarm from '../../hooks/useAlarm';
 
 const Countdown = () => {
   const { theme } = useTheme();
+  const { triggerAlarm, requestNotificationPermission } = useAlarm();
+  
   const [targetDate, setTargetDate] = useState(() => {
-    // Load target date from localStorage or set a default (e.g., next New Year)
     const savedDate = localStorage.getItem('countdownTargetDate');
     if (savedDate) {
       return new Date(savedDate);
     }
     const now = new Date();
-    const defaultDate = new Date(now.getFullYear() + 1, 0, 1); // Next Jan 1st
-    return defaultDate;
+    return new Date(now.getFullYear() + 1, 0, 1);
   });
+  
   const [timeLeft, setTimeLeft] = useState({});
   const [eventTitle, setEventTitle] = useState(() => {
-    const savedTitle = localStorage.getItem('countdownEventTitle');
-    return savedTitle || 'New Year';
+    return localStorage.getItem('countdownEventTitle') || 'New Year';
   });
+  
   const [isEditing, setIsEditing] = useState(false);
   const [inputDate, setInputDate] = useState('');
   const [inputTime, setInputTime] = useState('');
   const [inputTitle, setInputTitle] = useState('');
-  const [isExpanded, setIsExpanded] = useState(false); // New state for expand feature
+  const [isExpanded, setIsExpanded] = useState(false);
+  
+  // Track if we have already played the alarm for this completion
+  const hasPlayedAlarmRef = useRef(false);
 
   const calculateTimeLeft = () => {
     const difference = +targetDate - +new Date();
@@ -36,12 +41,23 @@ const Countdown = () => {
         seconds: Math.floor((difference / 1000) % 60),
       };
     }
-    return timeLeft;
+    return { timeLeft, difference };
   };
 
   useEffect(() => {
     const timer = setTimeout(() => {
-      setTimeLeft(calculateTimeLeft());
+      const { timeLeft: newTimeLeft, difference } = calculateTimeLeft();
+      setTimeLeft(newTimeLeft);
+
+      if (difference <= 0 && !hasPlayedAlarmRef.current) {
+        // Timer just finished
+        hasPlayedAlarmRef.current = true;
+        triggerAlarm(eventTitle, "The event has arrived!");
+      } else if (difference > 0) {
+        // Reset alarm flag if we are back in positive time (e.g. user changed date)
+        hasPlayedAlarmRef.current = false;
+      }
+
     }, 1000);
 
     localStorage.setItem('countdownTargetDate', targetDate.toISOString());
@@ -56,6 +72,8 @@ const Countdown = () => {
       setTargetDate(newTarget);
       setEventTitle(inputTitle || 'Custom Event');
       setIsEditing(false);
+      hasPlayedAlarmRef.current = false; // Reset alarm flag for new event
+      requestNotificationPermission(); // Ask for permission when setting
     } else {
       alert('Please enter a valid date and time.');
     }
@@ -97,7 +115,7 @@ const Countdown = () => {
           {timerComponents}
         </div>
       ) : (
-        <h2 className="text-4xl md:text-6xl font-bold text-green-400 mb-8">Event Has Arrived!</h2>
+        <h2 className="text-4xl md:text-6xl font-bold text-green-400 mb-8 animate-pulse">Event Has Arrived!</h2>
       )}
 
       {!isEditing && (
