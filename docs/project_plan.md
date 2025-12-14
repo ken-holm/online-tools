@@ -18,19 +18,28 @@
 *   Affiliate links in footer (hosting, gear).
 *   Potential non-intrusive ad (later).
 
-## 4. Future Ideas
+## 4. Completed Tools
 *   Pomodoro Timer (Completed)
 *   Metronome (Completed)
 *   Breathing Box (Completed)
 *   Prompter (Completed)
+*   Stopwatch (Completed)
+*   World Clock (Completed)
 *   Simple Calculator (Completed)
 *   Daily Counter (Completed)
 
-## 6. Monetization (Completed)
+## 5. Monetization (Completed)
 *   "Buy me a Coffee" button.
 *   Affiliate links in footer.
 
-## 5. Directory Structure
+## 6. Phase 2: Enhancements
+*   **PWA (Progressive Web App):** Installable, app-like experience. (In Progress)
+*   **Offline Support:** Work without internet connection.
+*   **Shareable URLs:** Pre-configure tools via link parameters.
+*   **Analytics:** Privacy-friendly usage tracking.
+*   **Sound Library:** Better audio assets for alarms/ticks.
+
+## 7. Directory Structure
 *   `docs/` - All documentation (except README.md).
 *   `src/` - Application source code.
 *   `public/` - Static assets.
