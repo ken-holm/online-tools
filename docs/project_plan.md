@@ -19,12 +19,12 @@
 *   Potential non-intrusive ad (later).
 
 ## 4. Future Ideas
-*   Pomodoro Timer (In Progress)
+*   Pomodoro Timer (Completed)
 *   Metronome
 *   Breathing Box (Completed)
 *   Prompter
 *   Stopwatch (Completed)
-*   World Clock
+*   World Clock (In Progress)
 
 ## 5. Directory Structure
 *   `docs/` - All documentation (except README.md).
