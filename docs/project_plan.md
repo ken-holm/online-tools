@@ -23,7 +23,7 @@
 *   Metronome
 *   Breathing Box
 *   Prompter
-*   Stopwatch
+*   Stopwatch (In Progress)
 *   World Clock
 
 ## 5. Directory Structure
