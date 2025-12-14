@@ -96,7 +96,7 @@ const Layout = () => {
         
         <div className="flex items-center gap-6">
           <a 
-            href="https://www.buymeacoffee.com" 
+            href={import.meta.env.VITE_BUY_ME_A_COFFEE_URL || "https://www.buymeacoffee.com"} 
             target="_blank" 
             rel="noopener noreferrer"
             className="flex items-center gap-2 text-yellow-400/80 hover:text-yellow-300 transition-colors bg-white/5 hover:bg-white/10 px-3 py-1.5 rounded-full"
@@ -106,7 +106,7 @@ const Layout = () => {
           </a>
           
           <a 
-            href="https://www.bluehost.com" 
+            href={import.meta.env.VITE_BLUEHOST_AFFILIATE_URL || "https://www.bluehost.com"} 
             target="_blank" 
             rel="noopener noreferrer"
             className="text-blue-300/60 hover:text-blue-300 transition-colors"
