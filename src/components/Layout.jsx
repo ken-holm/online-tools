@@ -66,6 +66,11 @@ const Layout = () => {
                 Calculator
               </Link>
             </li>
+            <li>
+              <Link to="/prompter" className="text-white/70 hover:text-white transition-colors text-sm font-medium uppercase tracking-wider">
+                Prompter
+              </Link>
+            </li>
             {/* Future tools will go here */}
           </ul>
           <button 
