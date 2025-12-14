@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Outlet, Link } from 'react-router-dom';
 import { useTheme } from '../context/ThemeContext';
-import { Settings as SettingsIcon, Menu } from 'lucide-react';
+import { Settings as SettingsIcon, Menu, Coffee } from 'lucide-react';
 import Settings from './Settings';
 
 const Layout = () => {
@@ -82,15 +82,38 @@ const Layout = () => {
         </div>
       </header>
 
-      {/* Spacer for fixed header - minimized as header is now mostly transparent/overlay, but good to keep content from starting under logo */}
+      {/* Spacer for fixed header */}
       <div className="h-20"></div>
 
       <main className="flex-grow flex items-center justify-center p-6 relative z-0">
         <Outlet />
       </main>
 
-      <footer className="py-6 text-center text-white/30 text-xs relative z-0">
-        &copy; {new Date().getFullYear()} tools.holmcc.com
+      <footer className="py-8 text-center text-white/40 text-xs relative z-0 flex flex-col items-center gap-4">
+        <div>
+          &copy; {new Date().getFullYear()} tools.holmcc.com
+        </div>
+        
+        <div className="flex items-center gap-6">
+          <a 
+            href="https://www.buymeacoffee.com" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            className="flex items-center gap-2 text-yellow-400/80 hover:text-yellow-300 transition-colors bg-white/5 hover:bg-white/10 px-3 py-1.5 rounded-full"
+          >
+            <Coffee size={14} />
+            <span>Buy me a coffee</span>
+          </a>
+          
+          <a 
+            href="https://www.bluehost.com" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            className="text-blue-300/60 hover:text-blue-300 transition-colors"
+          >
+            Hosted on BlueHost
+          </a>
+        </div>
       </footer>
 
       <Settings isOpen={isSettingsOpen} onClose={() => setIsSettingsOpen(false)} />
