@@ -21,6 +21,11 @@ const Layout = () => {
                 Clock
               </Link>
             </li>
+            <li>
+              <Link to="/countdown" className="text-white/70 hover:text-white transition-colors text-sm font-medium uppercase tracking-wider">
+                Countdown
+              </Link>
+            </li>
             {/* Future tools will go here */}
           </ul>
           <button 

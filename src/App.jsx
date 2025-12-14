@@ -1,6 +1,7 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Layout from './components/Layout';
 import Clock from './components/tools/Clock';
+import Countdown from './components/tools/Countdown'; // Import the new Countdown component
 
 const NotFound = () => (
   <div className="text-center text-red-500 text-3xl font-bold">404 - Page Not Found</div>
@@ -18,6 +19,7 @@ function App() {
             </div>
           } />
           <Route path="clock" element={<Clock />} />
+          <Route path="countdown" element={<Countdown />} /> {/* New Countdown Route */}
           {/* Future tools will have their routes here */}
           <Route path="*" element={<NotFound />} />
         </Route>
