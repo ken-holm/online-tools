@@ -1,29 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useTheme } from '../../context/ThemeContext';
-import { Plus, X, Globe } from 'lucide-react';
+import { Plus, X, Globe, Edit2, Check } from 'lucide-react';
 
 const COMMON_TIMEZONES = [
-  { label: 'UTC', value: 'UTC' },
-  { label: 'New York (EST/EDT)', value: 'America/New_York' },
-  { label: 'Los Angeles (PST/PDT)', value: 'America/Los_Angeles' },
-  { label: 'Chicago', value: 'America/Chicago' },
-  { label: 'London (GMT/BST)', value: 'Europe/London' },
-  { label: 'Paris (CET/CEST)', value: 'Europe/Paris' },
-  { label: 'Berlin', value: 'Europe/Berlin' },
-  { label: 'Moscow', value: 'Europe/Moscow' },
-  { label: 'Dubai', value: 'Asia/Dubai' },
-  { label: 'Mumbai', value: 'Asia/Kolkata' },
-  { label: 'Bangkok', value: 'Asia/Kolkata' }, // Correction: Mumbai is Kolkata, Bangkok is Bangkok
-  { label: 'Singapore', value: 'Asia/Bangkok' }, // Correction: Bangkok value above
-  { label: 'Shanghai', value: 'Asia/Shanghai' },
-  { label: 'Tokyo (JST)', value: 'Asia/Tokyo' },
-  { label: 'Sydney', value: 'Australia/Sydney' },
-  { label: 'Auckland', value: 'Australia/Auckland' },
-  { label: 'Hawaii', value: 'Pacific/Honolulu' },
-];
-
-// Correcting the manual list above to be more accurate
-const TIMEZONES = [
   { label: 'UTC', value: 'UTC' },
   { label: 'Honolulu', value: 'Pacific/Honolulu' },
   { label: 'Los Angeles', value: 'America/Los_Angeles' },
@@ -48,11 +27,26 @@ const TIMEZONES = [
 const WorldClock = () => {
   const { theme } = useTheme();
   const [time, setTime] = useState(new Date());
+  
+  // Detect local timezone
+  const localTimeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+
   const [clocks, setClocks] = useState(() => {
     const saved = localStorage.getItem('worldClocks');
-    return saved ? JSON.parse(saved) : [{ label: 'New York', value: 'America/New_York' }, { label: 'London', value: 'Europe/London' }];
+    if (saved) {
+      return JSON.parse(saved);
+    }
+    // Default: Local Time + UTC
+    return [
+      { label: 'My Local Time', value: localTimeZone, isLocal: true },
+      { label: 'UTC', value: 'UTC' }
+    ];
   });
+  
   const [isAdding, setIsAdding] = useState(false);
+  const [editingId, setEditingId] = useState(null); // value of the clock being edited
+  const [editLabel, setEditLabel] = useState('');
+  const editInputRef = useRef(null);
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -65,9 +59,17 @@ const WorldClock = () => {
     localStorage.setItem('worldClocks', JSON.stringify(clocks));
   }, [clocks]);
 
+  // Focus input when editing starts
+  useEffect(() => {
+    if (editingId && editInputRef.current) {
+      editInputRef.current.focus();
+      editInputRef.current.select();
+    }
+  }, [editingId]);
+
   const addClock = (zone) => {
     if (!clocks.find(c => c.value === zone.value)) {
-      setClocks([...clocks, zone]);
+      setClocks([...clocks, { ...zone, label: zone.label }]); // Ensure we store a copy so we can edit label
     }
     setIsAdding(false);
   };
@@ -76,13 +78,23 @@ const WorldClock = () => {
     setClocks(clocks.filter(c => c.value !== value));
   };
 
+  const startEditing = (clock) => {
+    setEditingId(clock.value);
+    setEditLabel(clock.label);
+  };
+
+  const saveLabel = (value) => {
+    setClocks(clocks.map(c => c.value === value ? { ...c, label: editLabel } : c));
+    setEditingId(null);
+  };
+
   const getTimeString = (zoneValue) => {
     try {
       return time.toLocaleTimeString('en-US', {
         timeZone: zoneValue,
         hour: '2-digit',
         minute: '2-digit',
-        hour12: true, // Or make configurable
+        hour12: true,
       });
     } catch (e) {
       return 'Invalid Timezone';
@@ -111,16 +123,47 @@ const WorldClock = () => {
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 w-full">
         {clocks.map((clock) => (
-          <div key={clock.value} className="bg-gray-800/50 backdrop-blur-md border border-white/10 p-6 rounded-2xl relative group hover:bg-gray-800/70 transition-all duration-300">
-            <button
-              onClick={() => removeClock(clock.value)}
-              className="absolute top-3 right-3 text-white/20 hover:text-red-400 transition-colors opacity-0 group-hover:opacity-100"
-              title="Remove Clock"
-            >
-              <X size={20} />
-            </button>
+          <div key={clock.value} className={`bg-gray-800/50 backdrop-blur-md border ${clock.isLocal ? 'border-blue-500/50 shadow-blue-500/20 shadow-lg' : 'border-white/10'} p-6 rounded-2xl relative group hover:bg-gray-800/70 transition-all duration-300`}>
+            
+            <div className="absolute top-3 right-3 flex space-x-2 opacity-0 group-hover:opacity-100 transition-opacity">
+              <button
+                onClick={() => startEditing(clock)}
+                className="text-white/40 hover:text-white transition-colors"
+                title="Edit Label"
+              >
+                <Edit2 size={16} />
+              </button>
+              <button
+                onClick={() => removeClock(clock.value)}
+                className="text-white/40 hover:text-red-400 transition-colors"
+                title="Remove Clock"
+              >
+                <X size={18} />
+              </button>
+            </div>
+
             <div className="flex flex-col items-center">
-              <span className="text-lg text-blue-300 font-medium tracking-wide uppercase mb-1">{clock.label}</span>
+              {editingId === clock.value ? (
+                <div className="flex items-center space-x-2 mb-1 w-full max-w-[200px]">
+                  <input
+                    ref={editInputRef}
+                    type="text"
+                    value={editLabel}
+                    onChange={(e) => setEditLabel(e.target.value)}
+                    onKeyDown={(e) => e.key === 'Enter' && saveLabel(clock.value)}
+                    className="bg-gray-700 text-white px-2 py-1 rounded text-center w-full text-sm font-medium focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  />
+                  <button onClick={() => saveLabel(clock.value)} className="text-green-400 hover:text-green-300">
+                    <Check size={18} />
+                  </button>
+                </div>
+              ) : (
+                <span className={`text-lg font-medium tracking-wide uppercase mb-1 flex items-center gap-2 ${clock.isLocal ? 'text-blue-300' : 'text-blue-200/70'}`}>
+                  {clock.label}
+                  {clock.isLocal && <span className="text-[10px] bg-blue-500/20 text-blue-300 px-1.5 py-0.5 rounded-full border border-blue-500/30">YOU</span>}
+                </span>
+              )}
+              
               <span className="text-5xl font-bold text-white tabular-nums tracking-tight drop-shadow-sm mb-2">
                 {getTimeString(clock.value)}
               </span>
@@ -140,7 +183,7 @@ const WorldClock = () => {
                 <button onClick={() => setIsAdding(false)}><X size={18} className="text-gray-400" /></button>
               </div>
               <ul className="space-y-1">
-                {TIMEZONES.filter(tz => !clocks.find(c => c.value === tz.value)).map(tz => (
+                {COMMON_TIMEZONES.filter(tz => !clocks.find(c => c.value === tz.value)).map(tz => (
                   <li key={tz.value}>
                     <button
                       onClick={() => addClock(tz)}
