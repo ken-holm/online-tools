@@ -19,9 +19,9 @@
 *   Potential non-intrusive ad (later).
 
 ## 4. Future Ideas
-*   Pomodoro Timer
+*   Pomodoro Timer (In Progress)
 *   Metronome
-*   Breathing Box (In Progress)
+*   Breathing Box (Completed)
 *   Prompter
 *   Stopwatch (Completed)
 *   World Clock
