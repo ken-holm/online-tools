@@ -102,7 +102,7 @@ const Breathing = () => {
           className={`w-64 h-64 md:w-80 md:h-80 rounded-full bg-gradient-to-br from-blue-400/30 to-purple-500/30 border-4 border-white/50 backdrop-blur-sm flex items-center justify-center shadow-2xl transition-transform ease-linear ${getTransitionDuration()}`}
           style={{ transform: `scale(${scale})` }}
         >
-          <span className={`text-4xl md:text-6xl font-bold text-white drop-shadow-lg select-none transition-all duration-300 ${isExpanded ? 'scale-50' : ''}`}>
+          <span className={`text-4xl md:text-5xl font-bold text-white drop-shadow-lg select-none transition-all duration-300 text-center leading-tight px-4 ${isExpanded ? 'scale-50' : ''}`}>
             {text}
           </span>
         </div>
