@@ -36,6 +36,11 @@ const Layout = () => {
                 Message
               </Link>
             </li>
+            <li>
+              <Link to="/stopwatch" className="text-white/70 hover:text-white transition-colors text-sm font-medium uppercase tracking-wider">
+                Stopwatch
+              </Link>
+            </li>
             {/* Future tools will go here */}
           </ul>
           <button 
