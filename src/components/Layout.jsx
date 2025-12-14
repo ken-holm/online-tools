@@ -1,89 +1,88 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { Outlet, Link } from 'react-router-dom';
 import { useTheme } from '../context/ThemeContext';
-import { Settings as SettingsIcon } from 'lucide-react';
+import { Settings as SettingsIcon, Menu } from 'lucide-react';
 import Settings from './Settings';
 
 const Layout = () => {
   const { theme } = useTheme();
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const hideMenuTimeoutRef = useRef(null);
+
+  const showMenu = () => {
+    if (hideMenuTimeoutRef.current) {
+      clearTimeout(hideMenuTimeoutRef.current);
+      hideMenuTimeoutRef.current = null;
+    }
+    setIsMenuOpen(true);
+  };
+
+  const hideMenu = () => {
+    hideMenuTimeoutRef.current = setTimeout(() => {
+      setIsMenuOpen(false);
+    }, 1500);
+  };
+
+  // Clear timeout on unmount
+  useEffect(() => {
+    return () => {
+      if (hideMenuTimeoutRef.current) clearTimeout(hideMenuTimeoutRef.current);
+    };
+  }, []);
 
   return (
     <div className={`min-h-screen text-white flex flex-col transition-all duration-500 relative ${theme.background} ${theme.font}`}>
       <header className="fixed top-0 left-0 right-0 z-50 px-6 py-4 flex justify-between items-center bg-black/20 backdrop-blur-md border-b border-white/10">
-        <h1 className="text-2xl font-bold tracking-tight text-white/90 hover:text-white transition-colors">
+        <h1 className="text-2xl font-bold tracking-tight text-white/90 hover:text-white transition-colors z-50">
           <Link to="/">tools.holmcc.com</Link>
         </h1>
-        <nav className="flex items-center space-x-6">
-          <ul className="flex space-x-6">
-            <li>
-              <Link to="/clock" className="text-white/70 hover:text-white transition-colors text-sm font-medium uppercase tracking-wider">
-                Clock
-              </Link>
-            </li>
-            <li>
-              <Link to="/countdown" className="text-white/70 hover:text-white transition-colors text-sm font-medium uppercase tracking-wider">
-                Countdown
-              </Link>
-            </li>
-            <li>
-              <Link to="/timer" className="text-white/70 hover:text-white transition-colors text-sm font-medium uppercase tracking-wider">
-                Timer
-              </Link>
-            </li>
-            <li>
-              <Link to="/message" className="text-white/70 hover:text-white transition-colors text-sm font-medium uppercase tracking-wider">
-                Message
-              </Link>
-            </li>
-            <li>
-              <Link to="/stopwatch" className="text-white/70 hover:text-white transition-colors text-sm font-medium uppercase tracking-wider">
-                Stopwatch
-              </Link>
-            </li>
-            <li>
-              <Link to="/breathing" className="text-white/70 hover:text-white transition-colors text-sm font-medium uppercase tracking-wider">
-                Breathing
-              </Link>
-            </li>
-            <li>
-              <Link to="/pomodoro" className="text-white/70 hover:text-white transition-colors text-sm font-medium uppercase tracking-wider">
-                Pomodoro
-              </Link>
-            </li>
-            <li>
-              <Link to="/world-clock" className="text-white/70 hover:text-white transition-colors text-sm font-medium uppercase tracking-wider">
-                World Clock
-              </Link>
-            </li>
-            <li>
-              <Link to="/metronome" className="text-white/70 hover:text-white transition-colors text-sm font-medium uppercase tracking-wider">
-                Metronome
-              </Link>
-            </li>
-            <li>
-              <Link to="/calculator" className="text-white/70 hover:text-white transition-colors text-sm font-medium uppercase tracking-wider">
-                Calculator
-              </Link>
-            </li>
-            <li>
-              <Link to="/prompter" className="text-white/70 hover:text-white transition-colors text-sm font-medium uppercase tracking-wider">
-                Prompter
-              </Link>
-            </li>
-            {/* Future tools will go here */}
-          </ul>
-          <button 
-            onClick={() => setIsSettingsOpen(true)}
-            className="text-white/70 hover:text-white transition-colors p-2 rounded-full hover:bg-white/10"
-            aria-label="Settings"
+
+        {/* Hamburger Icon Area */}
+        <div 
+          className="relative z-50"
+          onMouseEnter={showMenu}
+          onMouseLeave={hideMenu}
+        >
+          <div className="p-2 cursor-pointer text-white/70 hover:text-white transition-colors">
+            <Menu size={28} />
+          </div>
+
+          {/* Dropdown Menu */}
+          <div 
+            className={`absolute right-0 top-full mt-2 w-64 bg-gray-900/90 backdrop-blur-xl border border-white/10 rounded-xl shadow-2xl overflow-hidden transition-all duration-300 origin-top-right ${
+              isMenuOpen ? 'opacity-100 scale-100 translate-y-0 visible' : 'opacity-0 scale-95 -translate-y-2 invisible'
+            }`}
           >
-            <SettingsIcon size={20} />
-          </button>
-        </nav>
+            <nav className="flex flex-col p-2 max-h-[80vh] overflow-y-auto">
+              <Link to="/clock" className="px-4 py-3 hover:bg-white/10 rounded-lg text-sm font-medium transition-colors">Clock</Link>
+              <Link to="/countdown" className="px-4 py-3 hover:bg-white/10 rounded-lg text-sm font-medium transition-colors">Countdown</Link>
+              <Link to="/timer" className="px-4 py-3 hover:bg-white/10 rounded-lg text-sm font-medium transition-colors">Timer</Link>
+              <Link to="/pomodoro" className="px-4 py-3 hover:bg-white/10 rounded-lg text-sm font-medium transition-colors">Pomodoro</Link>
+              <Link to="/world-clock" className="px-4 py-3 hover:bg-white/10 rounded-lg text-sm font-medium transition-colors">World Clock</Link>
+              <Link to="/metronome" className="px-4 py-3 hover:bg-white/10 rounded-lg text-sm font-medium transition-colors">Metronome</Link>
+              <Link to="/stopwatch" className="px-4 py-3 hover:bg-white/10 rounded-lg text-sm font-medium transition-colors">Stopwatch</Link>
+              <Link to="/calculator" className="px-4 py-3 hover:bg-white/10 rounded-lg text-sm font-medium transition-colors">Calculator</Link>
+              <Link to="/prompter" className="px-4 py-3 hover:bg-white/10 rounded-lg text-sm font-medium transition-colors">Prompter</Link>
+              <Link to="/message" className="px-4 py-3 hover:bg-white/10 rounded-lg text-sm font-medium transition-colors">Message</Link>
+              <Link to="/breathing" className="px-4 py-3 hover:bg-white/10 rounded-lg text-sm font-medium transition-colors">Breathing</Link>
+              <Link to="/counter" className="px-4 py-3 hover:bg-white/10 rounded-lg text-sm font-medium transition-colors">Counter</Link>
+              
+              <div className="h-px bg-white/10 my-2"></div>
+              
+              <button 
+                onClick={() => setIsSettingsOpen(true)}
+                className="px-4 py-3 hover:bg-white/10 rounded-lg text-sm font-medium transition-colors flex items-center gap-2 text-left w-full"
+              >
+                <SettingsIcon size={16} />
+                Settings
+              </button>
+            </nav>
+          </div>
+        </div>
       </header>
 
-      {/* Spacer for fixed header */}
+      {/* Spacer for fixed header - minimized as header is now mostly transparent/overlay, but good to keep content from starting under logo */}
       <div className="h-20"></div>
 
       <main className="flex-grow flex items-center justify-center p-6 relative z-0">
