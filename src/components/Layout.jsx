@@ -56,6 +56,11 @@ const Layout = () => {
                 World Clock
               </Link>
             </li>
+            <li>
+              <Link to="/metronome" className="text-white/70 hover:text-white transition-colors text-sm font-medium uppercase tracking-wider">
+                Metronome
+              </Link>
+            </li>
             {/* Future tools will go here */}
           </ul>
           <button 
