@@ -35,7 +35,7 @@
 ## 6. Phase 2: Enhancements
 *   **PWA (Progressive Web App):** Installable, app-like experience. (Completed)
 *   **Offline Support:** Work without internet connection.
-*   **Shareable URLs:** Pre-configure tools via link parameters.
+*   **Shareable URLs:** Pre-configure tools via link parameters. (In Progress)
 *   **Analytics:** Privacy-friendly usage tracking.
 *   **Sound Library:** Better audio assets for alarms/ticks.
 
