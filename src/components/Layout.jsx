@@ -1,14 +1,33 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Outlet, Link } from 'react-router-dom';
 import { useTheme } from '../context/ThemeContext';
-import { Settings as SettingsIcon, Menu, Coffee } from 'lucide-react';
+import { Settings as SettingsIcon, Menu, Coffee, Download } from 'lucide-react';
 import Settings from './Settings';
 
 const Layout = () => {
   const { theme } = useTheme();
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [deferredPrompt, setDeferredPrompt] = useState(null);
   const hideMenuTimeoutRef = useRef(null);
+
+  useEffect(() => {
+    const handler = (e) => {
+      e.preventDefault();
+      setDeferredPrompt(e);
+    };
+    window.addEventListener('beforeinstallprompt', handler);
+    return () => window.removeEventListener('beforeinstallprompt', handler);
+  }, []);
+
+  const handleInstallClick = async () => {
+    if (!deferredPrompt) return;
+    deferredPrompt.prompt();
+    const { outcome } = await deferredPrompt.userChoice;
+    if (outcome === 'accepted') {
+      setDeferredPrompt(null);
+    }
+  };
 
   const showMenu = () => {
     if (hideMenuTimeoutRef.current) {
@@ -55,6 +74,15 @@ const Layout = () => {
             }`}
           >
             <nav className="flex flex-col p-2 max-h-[80vh] overflow-y-auto">
+              {deferredPrompt && (
+                <button 
+                  onClick={handleInstallClick}
+                  className="px-4 py-3 hover:bg-blue-600/20 text-blue-300 hover:text-blue-200 rounded-lg text-sm font-bold transition-colors flex items-center gap-2 w-full text-left mb-2 border border-blue-500/30"
+                >
+                  <Download size={16} />
+                  Install App
+                </button>
+              )}
               <Link to="/breathing" className="px-4 py-3 hover:bg-white/10 rounded-lg text-sm font-medium transition-colors">Breathing</Link>
               <Link to="/calculator" className="px-4 py-3 hover:bg-white/10 rounded-lg text-sm font-medium transition-colors">Calculator</Link>
               <Link to="/clock" className="px-4 py-3 hover:bg-white/10 rounded-lg text-sm font-medium transition-colors">Clock</Link>
