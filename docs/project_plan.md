@@ -40,7 +40,7 @@
 *   **Sound Library:** Better audio assets for alarms/ticks. (Completed)
 
 ## 7. Phase 3: Additional Tools
-*   **Password Generator:** Secure, random password creator.
+*   **Password Generator:** Secure, random password creator. (In Progress)
 *   **QR Code Generator:** Create QR codes for text/URLs.
 *   **Text Utilities:** Word count, case converter.
 *   **Unit Converter:** Length, weight, temperature, etc.
