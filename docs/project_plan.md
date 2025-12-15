@@ -44,7 +44,7 @@
 *   **QR Code Generator:** Create QR codes for text/URLs. (Completed)
 *   **Text Utilities:** Word count, case converter. (Completed)
 *   **Unit Converter:** Length, weight, temperature, etc. (Completed)
-*   **JSON Formatter:** Prettify and validate JSON. (In Progress)
+*   **JSON Formatter:** Prettify and validate JSON. (Completed)
 
 ## 8. Directory Structure
 *   `docs/` - All documentation (except README.md).
