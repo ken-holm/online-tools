@@ -1,9 +1,9 @@
 import React from 'react';
 import { useTheme } from '../context/ThemeContext';
-import { X } from 'lucide-react';
+import { X, Volume2 } from 'lucide-react';
 
 const Settings = ({ isOpen, onClose }) => {
-  const { theme, updateBackground, updateFont } = useTheme();
+  const { theme, updateBackground, updateFont, updateAlarmSound } = useTheme();
 
   if (!isOpen) return null;
 
@@ -20,6 +20,12 @@ const Settings = ({ isOpen, onClose }) => {
     { name: 'Modern', class: 'font-sans' },
     { name: 'Code', class: 'font-mono' },
     { name: 'Classic', class: 'font-serif' },
+  ];
+
+  const sounds = [
+    { name: 'Beep', value: 'beep' },
+    { name: 'Zen Bell', value: 'bell' },
+    { name: 'Digital', value: 'digital' },
   ];
 
   return (
@@ -52,7 +58,7 @@ const Settings = ({ isOpen, onClose }) => {
           </div>
         </div>
 
-        <div>
+        <div className="mb-6">
           <h3 className="text-lg font-semibold mb-3 text-gray-300">Typography</h3>
           <div className="flex flex-col space-y-2">
             {fonts.map((f) => (
@@ -67,6 +73,28 @@ const Settings = ({ isOpen, onClose }) => {
               >
                 <span>{f.name}</span>
                 {theme.font === f.class && <span className="text-blue-400 text-sm">Active</span>}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        <div>
+          <h3 className="text-lg font-semibold mb-3 text-gray-300 flex items-center gap-2">
+            <Volume2 size={18} />
+            Alarm Sound
+          </h3>
+          <div className="grid grid-cols-3 gap-3">
+            {sounds.map((s) => (
+              <button
+                key={s.value}
+                onClick={() => updateAlarmSound(s.value)}
+                className={`px-2 py-2 rounded-lg border transition-all text-sm font-medium ${
+                  theme.alarmSound === s.value
+                    ? 'bg-gray-700 border-blue-500 text-white'
+                    : 'bg-gray-900 border-gray-700 text-gray-400 hover:bg-gray-700'
+                }`}
+              >
+                {s.name}
               </button>
             ))}
           </div>

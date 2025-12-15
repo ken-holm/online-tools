@@ -12,6 +12,7 @@ export const ThemeProvider = ({ children }) => {
       background: 'bg-gradient-to-br from-gray-900 to-gray-800',
       font: 'font-sans', // Inter
       customBackground: null, // For future image support
+      alarmSound: 'beep', // Default alarm sound
     };
   });
 
@@ -27,8 +28,12 @@ export const ThemeProvider = ({ children }) => {
     setTheme(prev => ({ ...prev, font: fontClass }));
   };
 
+  const updateAlarmSound = (sound) => {
+    setTheme(prev => ({ ...prev, alarmSound: sound }));
+  };
+
   return (
-    <ThemeContext.Provider value={{ theme, updateBackground, updateFont }}>
+    <ThemeContext.Provider value={{ theme, updateBackground, updateFont, updateAlarmSound }}>
       {children}
     </ThemeContext.Provider>
   );
