@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { useLocation } from 'react-router-dom';
 import { useTheme } from '../../context/ThemeContext';
 import useAlarm from '../../hooks/useAlarm';
 import SEO from '../SEO';
@@ -6,8 +7,18 @@ import SEO from '../SEO';
 const Countdown = () => {
   const { theme } = useTheme();
   const { triggerAlarm, requestNotificationPermission } = useAlarm();
+  const location = useLocation();
   
   const [targetDate, setTargetDate] = useState(() => {
+    const params = new URLSearchParams(location.search);
+    const urlDate = params.get('date');
+    if (urlDate) {
+      const parsedDate = new Date(urlDate);
+      if (!isNaN(parsedDate.getTime())) {
+        return parsedDate;
+      }
+    }
+
     const savedDate = localStorage.getItem('countdownTargetDate');
     if (savedDate) {
       return new Date(savedDate);
@@ -18,7 +29,8 @@ const Countdown = () => {
   
   const [timeLeft, setTimeLeft] = useState({});
   const [eventTitle, setEventTitle] = useState(() => {
-    return localStorage.getItem('countdownEventTitle') || 'New Year';
+    const params = new URLSearchParams(location.search);
+    return params.get('title') || localStorage.getItem('countdownEventTitle') || 'New Year';
   });
   
   const [isEditing, setIsEditing] = useState(false);
@@ -61,6 +73,8 @@ const Countdown = () => {
 
     }, 1000);
 
+    // Only save to localStorage if NOT from URL (optional preference, but standard behavior usually overwrites local state)
+    // Actually, saving shared URL state to local is usually expected behavior so the user keeps it.
     localStorage.setItem('countdownTargetDate', targetDate.toISOString());
     localStorage.setItem('countdownEventTitle', eventTitle);
 
@@ -198,5 +212,5 @@ const Countdown = () => {
   );
 };
 
-
 export default Countdown;
+
