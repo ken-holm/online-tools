@@ -12,6 +12,7 @@ import Metronome from './components/tools/Metronome';
 import Calculator from './components/tools/Calculator';
 import Prompter from './components/tools/Prompter';
 import Counter from './components/tools/Counter'; // Import the new Counter component
+import Analytics from './components/Analytics';
 
 const NotFound = () => (
   <div className="text-center text-red-500 text-3xl font-bold">404 - Page Not Found</div>
@@ -20,6 +21,7 @@ const NotFound = () => (
 function App() {
   return (
     <BrowserRouter>
+      <Analytics />
       <Routes>
         <Route path="/" element={<Layout />}>
           <Route index element={<Clock />} />
