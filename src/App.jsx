@@ -16,7 +16,8 @@ import PasswordGenerator from './components/tools/PasswordGenerator';
 import QrCode from './components/tools/QrCode';
 import TextUtilities from './components/tools/TextUtilities';
 import UnitConverter from './components/tools/UnitConverter';
-import JsonFormatter from './components/tools/JsonFormatter'; // Import new component
+import JsonFormatter from './components/tools/JsonFormatter';
+import MarkdownViewer from './components/tools/MarkdownViewer'; // Import new component
 import Analytics from './components/Analytics';
 
 const NotFound = () => (
@@ -46,7 +47,8 @@ function App() {
           <Route path="qr-code" element={<QrCode />} />
           <Route path="text-utilities" element={<TextUtilities />} />
           <Route path="unit-converter" element={<UnitConverter />} />
-          <Route path="json-formatter" element={<JsonFormatter />} /> {/* New Route */}
+          <Route path="json-formatter" element={<JsonFormatter />} />
+          <Route path="markdown-viewer" element={<MarkdownViewer />} /> {/* New Route */}
           {/* Future tools will have their routes here */}
           <Route path="*" element={<NotFound />} />
         </Route>
