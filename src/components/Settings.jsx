@@ -1,11 +1,29 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useTheme } from '../context/ThemeContext';
 import { X, Volume2 } from 'lucide-react';
 
 const Settings = ({ isOpen, onClose }) => {
   const { theme, updateBackground, updateFont, updateAlarmSound } = useTheme();
 
+  // Close on ESC
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape') onClose();
+    };
+    if (isOpen) {
+      window.addEventListener('keydown', handleKeyDown);
+    }
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [isOpen, onClose]);
+
   if (!isOpen) return null;
+
+  // Close on Click Outside
+  const handleOverlayClick = (e) => {
+    if (e.target === e.currentTarget) {
+      onClose();
+    }
+  };
 
   const gradients = [
     { name: 'Midnight', class: 'bg-gradient-to-br from-gray-900 to-gray-800' },
@@ -29,7 +47,10 @@ const Settings = ({ isOpen, onClose }) => {
   ];
 
   return (
-    <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black bg-opacity-50 backdrop-blur-sm">
+    <div 
+      className="fixed inset-0 z-[100] flex items-center justify-center bg-black bg-opacity-50 backdrop-blur-sm"
+      onClick={handleOverlayClick}
+    >
       <div className="bg-gray-800 text-white rounded-2xl shadow-2xl w-full max-w-md p-6 relative border border-gray-700">
         <button 
           onClick={onClose}
