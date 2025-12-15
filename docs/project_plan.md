@@ -34,12 +34,19 @@
 
 ## 6. Phase 2: Enhancements
 *   **PWA (Progressive Web App):** Installable, app-like experience. (Completed)
-*   **Offline Support:** Work without internet connection.
+*   **Offline Support:** Work without internet connection. (Completed)
 *   **Shareable URLs:** Pre-configure tools via link parameters. (Completed)
 *   **Analytics:** Privacy-friendly usage tracking. (Completed)
 *   **Sound Library:** Better audio assets for alarms/ticks. (Completed)
 
-## 7. Directory Structure
+## 7. Phase 3: Additional Tools
+*   **Password Generator:** Secure, random password creator.
+*   **QR Code Generator:** Create QR codes for text/URLs.
+*   **Text Utilities:** Word count, case converter.
+*   **Unit Converter:** Length, weight, temperature, etc.
+*   **JSON Formatter:** Prettify and validate JSON.
+
+## 8. Directory Structure
 *   `docs/` - All documentation (except README.md).
 *   `src/` - Application source code.
 *   `public/` - Static assets.
