@@ -37,7 +37,7 @@
 *   **Offline Support:** Work without internet connection.
 *   **Shareable URLs:** Pre-configure tools via link parameters. (Completed)
 *   **Analytics:** Privacy-friendly usage tracking.
-*   **Sound Library:** Better audio assets for alarms/ticks.
+*   **Sound Library:** Better audio assets for alarms/ticks. (In Progress)
 
 ## 7. Directory Structure
 *   `docs/` - All documentation (except README.md).
