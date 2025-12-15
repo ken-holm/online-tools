@@ -14,7 +14,8 @@ import Prompter from './components/tools/Prompter';
 import Counter from './components/tools/Counter';
 import PasswordGenerator from './components/tools/PasswordGenerator';
 import QrCode from './components/tools/QrCode';
-import TextUtilities from './components/tools/TextUtilities'; // Import new component
+import TextUtilities from './components/tools/TextUtilities';
+import UnitConverter from './components/tools/UnitConverter'; // Import new component
 import Analytics from './components/Analytics';
 
 const NotFound = () => (
@@ -42,7 +43,8 @@ function App() {
           <Route path="counter" element={<Counter />} />
           <Route path="password-generator" element={<PasswordGenerator />} />
           <Route path="qr-code" element={<QrCode />} />
-          <Route path="text-utilities" element={<TextUtilities />} /> {/* New Route */}
+          <Route path="text-utilities" element={<TextUtilities />} />
+          <Route path="unit-converter" element={<UnitConverter />} /> {/* New Route */}
           {/* Future tools will have their routes here */}
           <Route path="*" element={<NotFound />} />
         </Route>
