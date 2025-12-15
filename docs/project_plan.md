@@ -47,7 +47,16 @@
 *   **JSON Formatter:** Prettify and validate JSON. (Completed)
 *   **Markdown Viewer:** Render Markdown to HTML. (Completed)
 
-## 8. Directory Structure
+## 8. Phase 4: Additional Tools
+*   **IP Subnet Calculator:** Calculate network ranges, broadcast addresses, etc.
+*   **Bandwidth Calculator:** Calculate download times for file sizes at different speeds.
+*   **URL Encoder/Decoder:** Useful for debugging query strings.
+*   **Base64 Encoder/Decoder:** Frequently used for authentication headers or data URIs.
+*   **IPv4/IPv6 Validator:** Regex-based validation to check if an IP address is valid.
+*   **MAC Address OUI Lookup:** (If you include a static JSON database) Identify the manufacturer of a network device.
+*   **JWT Debugger:** Decode and inspect JSON Web Tokens (common in network auth).
+
+## 9. Directory Structure
 *   `docs/` - All documentation (except README.md).
 *   `src/` - Application source code.
 *   `public/` - Static assets.
