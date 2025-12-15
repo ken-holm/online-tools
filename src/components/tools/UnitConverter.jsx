@@ -27,7 +27,9 @@ const standardUnits = {
     tonne: 1000000,
   },
   temperature: {
-    // Special handling for temp
+    celsius: 'celsius',
+    fahrenheit: 'fahrenheit',
+    kelvin: 'kelvin',
   },
   volume: {
     liter: 1,
