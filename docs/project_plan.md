@@ -41,8 +41,8 @@
 
 ## 7. Phase 3: Additional Tools
 *   **Password Generator:** Secure, random password creator. (Completed)
-*   **QR Code Generator:** Create QR codes for text/URLs. (In Progress)
-*   **Text Utilities:** Word count, case converter.
+*   **QR Code Generator:** Create QR codes for text/URLs. (Completed)
+*   **Text Utilities:** Word count, case converter. (In Progress)
 *   **Unit Converter:** Length, weight, temperature, etc.
 *   **JSON Formatter:** Prettify and validate JSON.
 
