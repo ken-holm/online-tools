@@ -1,12 +1,12 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { useTheme } from '../../context/ThemeContext';
-import { Copy, RefreshCw, Check } from 'lucide-react';
+import { Copy, RefreshCw, Check, Edit2 } from 'lucide-react';
 import SEO from '../SEO';
 
 const PasswordGenerator = () => {
   const { theme } = useTheme();
   const [password, setPassword] = useState('');
-  const [length, setLength] = useState(16);
+  const [length, setLength] = useState(12); // Default to 12
   const [options, setOptions] = useState({
     uppercase: true,
     lowercase: true,
@@ -15,6 +15,9 @@ const PasswordGenerator = () => {
   });
   const [copied, setCopied] = useState(false);
   const [strength, setStrength] = useState(0);
+  const [isEditingLength, setIsEditingLength] = useState(false);
+  const [inputLength, setInputLength] = useState(length);
+  const lengthInputRef = useRef(null);
 
   const generatePassword = useCallback(() => {
     const charset = {
@@ -91,6 +94,23 @@ const PasswordGenerator = () => {
     }
   };
 
+  const handleSaveLength = () => {
+    let newLen = parseInt(inputLength);
+    if (isNaN(newLen) || newLen < 8) newLen = 8;
+    if (newLen > 64) newLen = 64;
+    setLength(newLen);
+    setInputLength(newLen); // Sync input with validated length
+    setIsEditingLength(false);
+  };
+
+  useEffect(() => {
+    if (isEditingLength && lengthInputRef.current) {
+      lengthInputRef.current.focus();
+      lengthInputRef.current.select();
+    }
+  }, [isEditingLength]);
+
+
   return (
     <div className={`flex flex-col items-center justify-center min-h-full p-4 ${theme.font}`}>
       <SEO 
@@ -132,16 +152,37 @@ const PasswordGenerator = () => {
         <div className="space-y-6">
           {/* Length Slider */}
           <div>
-            <div className="flex justify-between text-white/80 mb-2 font-medium">
+            <div className="flex justify-between text-white/80 mb-2 font-medium items-center">
               <span>Length</span>
-              <span>{length}</span>
+              {isEditingLength ? (
+                <div className="flex items-center gap-2">
+                  <input
+                    ref={lengthInputRef}
+                    type="number"
+                    min="8"
+                    max="64"
+                    value={inputLength}
+                    onChange={(e) => setInputLength(e.target.value)}
+                    onKeyDown={(e) => e.key === 'Enter' && handleSaveLength()}
+                    onBlur={handleSaveLength}
+                    className="w-16 p-1 rounded bg-gray-700 border border-gray-600 text-white text-center text-sm focus:outline-none focus:border-blue-500"
+                  />
+                  <button onClick={handleSaveLength} className="text-green-400 hover:text-green-300">
+                    <Check size={18} />
+                  </button>
+                </div>
+              ) : (
+                <span onClick={() => setIsEditingLength(true)} className="flex items-center gap-1 cursor-pointer hover:text-white transition-colors">
+                  {length} <Edit2 size={16} />
+                </span>
+              )}
             </div>
             <input
               type="range"
               min="8"
               max="64"
               value={length}
-              onChange={(e) => setLength(Number(e.target.value))}
+              onChange={(e) => {setLength(Number(e.target.value)); setInputLength(Number(e.target.value));}}
               className="w-full accent-blue-500 h-2 bg-gray-700 rounded-lg appearance-none cursor-pointer"
             />
           </div>
