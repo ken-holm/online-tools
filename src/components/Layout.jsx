@@ -100,6 +100,61 @@ const Layout = () => {
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [isMenuOpen, isSettingsOpen]);
 
+  // Keyboard Navigation
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      // Toggle Menu with '/'
+      if (e.key === '/' && !isSettingsOpen) {
+        e.preventDefault();
+        setIsMenuOpen(prev => !prev);
+        return;
+      }
+
+      // Close menu with Escape
+      if (e.key === 'Escape' && isMenuOpen) {
+        setIsMenuOpen(false);
+        return;
+      }
+
+      if (!isMenuOpen) return;
+
+      // Menu Navigation Logic
+      const links = menuRef.current?.querySelectorAll('a');
+      if (!links) return;
+
+      // Handle simple letter keys
+      if (e.key.length === 1 && /[a-z]/i.test(e.key)) {
+        const char = e.key.toLowerCase();
+        let matchIndex = -1;
+        
+        // Find next match
+        const focusedElement = document.activeElement;
+        let startIndex = 0;
+        
+        // If currently focused on a link, start searching after it
+        Array.from(links).forEach((link, index) => {
+          if (link === focusedElement) startIndex = index + 1;
+        });
+
+        // Search forward from current position
+        for (let i = startIndex; i < links.length + startIndex; i++) {
+          const index = i % links.length;
+          if (links[index].textContent.toLowerCase().startsWith(char)) {
+            matchIndex = index;
+            break;
+          }
+        }
+
+        if (matchIndex !== -1) {
+          links[matchIndex].focus();
+        }
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [isMenuOpen, isSettingsOpen]);
+
   // Clear timeout on unmount
   useEffect(() => {
     return () => {
