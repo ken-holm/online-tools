@@ -108,11 +108,16 @@ const Layout = () => {
   }, []);
 
   return (
-    <div className={`min-h-screen text-white flex flex-col transition-all duration-500 relative ${theme.background} ${theme.font}`}>
-      <header className="fixed top-0 left-0 right-0 z-50 px-6 py-4 flex justify-between items-center bg-black/20 backdrop-blur-md border-b border-white/10">
-        <h1 className="text-2xl font-bold tracking-tight text-white/90 hover:text-white transition-colors z-50">
-          <Link to="/">tools.holmcc.com</Link>
-        </h1>
+    <>
+      {/* Fixed Background Layer */}
+      <div className={`fixed inset-0 -z-50 transition-all duration-500 ${theme.background}`} />
+
+      {/* Main Content Wrapper */}
+      <div className={`min-h-screen text-white flex flex-col relative ${theme.font}`}>
+        <header className="fixed top-0 left-0 right-0 z-50 px-6 py-4 flex justify-between items-center bg-black/20 backdrop-blur-md border-b border-white/10">
+          <h1 className="text-2xl font-bold tracking-tight text-white/90 hover:text-white transition-colors z-50">
+            <Link to="/">tools.holmcc.com</Link>
+          </h1>
 
         {/* Hamburger Icon Area */}
         <div 
@@ -181,7 +186,7 @@ const Layout = () => {
         <Outlet />
       </main>
 
-      <footer className="py-8 text-center text-white/40 text-xs relative z-0 flex flex-col items-center gap-4">
+      <footer className="py-8 text-center text-white/40 text-xs relative z-0 flex flex-col items-center gap-4 bg-black/20 backdrop-blur-md border-t border-white/10 mt-auto">
         <div>
           &copy; {new Date().getFullYear()} tools.holmcc.com
         </div>
@@ -210,6 +215,7 @@ const Layout = () => {
 
       <Settings isOpen={isSettingsOpen} onClose={() => setIsSettingsOpen(false)} />
     </div>
+    </>
   );
 };
 
