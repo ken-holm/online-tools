@@ -75,7 +75,7 @@ const MarkdownViewer = () => {
         </div>
       </div>
 
-      <div className="w-full h-[70vh] grid md:grid-cols-2 gap-6 relative">
+      <div className="w-full h-[calc(100vh-12rem)] grid md:grid-cols-2 gap-6 relative">
         
         {/* Editor Pane */}
         <div className={`h-full flex flex-col ${view === 'preview' ? 'hidden md:hidden' : ''} ${view === 'split' ? 'hidden md:flex' : ''} ${view === 'editor' ? 'flex md:flex col-span-2' : ''}`}>
