@@ -43,8 +43,8 @@
 *   **Password Generator:** Secure, random password creator. (Completed)
 *   **QR Code Generator:** Create QR codes for text/URLs. (Completed)
 *   **Text Utilities:** Word count, case converter. (Completed)
-*   **Unit Converter:** Length, weight, temperature, etc. (In Progress)
-*   **JSON Formatter:** Prettify and validate JSON.
+*   **Unit Converter:** Length, weight, temperature, etc. (Completed)
+*   **JSON Formatter:** Prettify and validate JSON. (In Progress)
 
 ## 8. Directory Structure
 *   `docs/` - All documentation (except README.md).
