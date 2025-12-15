@@ -1,15 +1,17 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Outlet, Link } from 'react-router-dom';
+import { Outlet, Link, useNavigate } from 'react-router-dom';
 import { useTheme } from '../context/ThemeContext';
 import { Settings as SettingsIcon, Menu, Coffee, Download } from 'lucide-react';
 import Settings from './Settings';
 
 const Layout = () => {
   const { theme } = useTheme();
+  const navigate = useNavigate();
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [deferredPrompt, setDeferredPrompt] = useState(null);
   const hideMenuTimeoutRef = useRef(null);
+  const menuRef = useRef(null);
 
   useEffect(() => {
     const handler = (e) => {
@@ -43,6 +45,61 @@ const Layout = () => {
     }, 1500);
   };
 
+  // Keyboard Navigation
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      // Toggle Menu with '/'
+      if (e.key === '/' && !isSettingsOpen) {
+        e.preventDefault();
+        setIsMenuOpen(prev => !prev);
+        return;
+      }
+
+      // Close menu with Escape
+      if (e.key === 'Escape' && isMenuOpen) {
+        setIsMenuOpen(false);
+        return;
+      }
+
+      if (!isMenuOpen) return;
+
+      // Menu Navigation Logic
+      const links = menuRef.current?.querySelectorAll('a');
+      if (!links) return;
+
+      // Handle simple letter keys
+      if (e.key.length === 1 && /[a-z]/i.test(e.key)) {
+        const char = e.key.toLowerCase();
+        let matchIndex = -1;
+        
+        // Find next match
+        const focusedElement = document.activeElement;
+        let startIndex = 0;
+        
+        // If currently focused on a link, start searching after it
+        Array.from(links).forEach((link, index) => {
+          if (link === focusedElement) startIndex = index + 1;
+        });
+
+        // Search forward from current position
+        for (let i = startIndex; i < links.length + startIndex; i++) {
+          const index = i % links.length;
+          if (links[index].textContent.toLowerCase().startsWith(char)) {
+            matchIndex = index;
+            break;
+          }
+        }
+
+        if (matchIndex !== -1) {
+          links[matchIndex].focus();
+        }
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [isMenuOpen, isSettingsOpen]);
+
   // Clear timeout on unmount
   useEffect(() => {
     return () => {
@@ -63,12 +120,13 @@ const Layout = () => {
           onMouseEnter={showMenu}
           onMouseLeave={hideMenu}
         >
-          <div className="p-2 cursor-pointer text-white/70 hover:text-white transition-colors">
+          <div className="p-2 cursor-pointer text-white/70 hover:text-white transition-colors" onClick={() => setIsMenuOpen(!isMenuOpen)}>
             <Menu size={28} />
           </div>
 
           {/* Dropdown Menu */}
           <div 
+            ref={menuRef}
             className={`absolute right-0 top-full mt-2 w-64 bg-gray-900/90 backdrop-blur-xl border border-white/10 rounded-xl shadow-2xl overflow-hidden transition-all duration-300 origin-top-right ${
               isMenuOpen ? 'opacity-100 scale-100 translate-y-0 visible' : 'opacity-0 scale-95 -translate-y-2 invisible'
             }`}
@@ -83,24 +141,24 @@ const Layout = () => {
                   Install App
                 </button>
               )}
-              <Link to="/breathing" className="px-4 py-3 hover:bg-white/10 rounded-lg text-sm font-medium transition-colors">Breathing</Link>
-              <Link to="/calculator" className="px-4 py-3 hover:bg-white/10 rounded-lg text-sm font-medium transition-colors">Calculator</Link>
-              <Link to="/clock" className="px-4 py-3 hover:bg-white/10 rounded-lg text-sm font-medium transition-colors">Clock</Link>
-              <Link to="/countdown" className="px-4 py-3 hover:bg-white/10 rounded-lg text-sm font-medium transition-colors">Countdown</Link>
-              <Link to="/counter" className="px-4 py-3 hover:bg-white/10 rounded-lg text-sm font-medium transition-colors">Counter</Link>
-              <Link to="/message" className="px-4 py-3 hover:bg-white/10 rounded-lg text-sm font-medium transition-colors">Message</Link>
-              <Link to="/metronome" className="px-4 py-3 hover:bg-white/10 rounded-lg text-sm font-medium transition-colors">Metronome</Link>
-              <Link to="/pomodoro" className="px-4 py-3 hover:bg-white/10 rounded-lg text-sm font-medium transition-colors">Pomodoro</Link>
-              <Link to="/prompter" className="px-4 py-3 hover:bg-white/10 rounded-lg text-sm font-medium transition-colors">Prompter</Link>
-              <Link to="/stopwatch" className="px-4 py-3 hover:bg-white/10 rounded-lg text-sm font-medium transition-colors">Stopwatch</Link>
-              <Link to="/timer" className="px-4 py-3 hover:bg-white/10 rounded-lg text-sm font-medium transition-colors">Timer</Link>
-              <Link to="/world-clock" className="px-4 py-3 hover:bg-white/10 rounded-lg text-sm font-medium transition-colors">World Clock</Link>
+              <Link to="/breathing" onClick={() => setIsMenuOpen(false)} className="px-4 py-3 hover:bg-white/10 rounded-lg text-sm font-medium transition-colors focus:bg-white/20 outline-none">Breathing</Link>
+              <Link to="/calculator" onClick={() => setIsMenuOpen(false)} className="px-4 py-3 hover:bg-white/10 rounded-lg text-sm font-medium transition-colors focus:bg-white/20 outline-none">Calculator</Link>
+              <Link to="/clock" onClick={() => setIsMenuOpen(false)} className="px-4 py-3 hover:bg-white/10 rounded-lg text-sm font-medium transition-colors focus:bg-white/20 outline-none">Clock</Link>
+              <Link to="/countdown" onClick={() => setIsMenuOpen(false)} className="px-4 py-3 hover:bg-white/10 rounded-lg text-sm font-medium transition-colors focus:bg-white/20 outline-none">Countdown</Link>
+              <Link to="/counter" onClick={() => setIsMenuOpen(false)} className="px-4 py-3 hover:bg-white/10 rounded-lg text-sm font-medium transition-colors focus:bg-white/20 outline-none">Counter</Link>
+              <Link to="/message" onClick={() => setIsMenuOpen(false)} className="px-4 py-3 hover:bg-white/10 rounded-lg text-sm font-medium transition-colors focus:bg-white/20 outline-none">Message</Link>
+              <Link to="/metronome" onClick={() => setIsMenuOpen(false)} className="px-4 py-3 hover:bg-white/10 rounded-lg text-sm font-medium transition-colors focus:bg-white/20 outline-none">Metronome</Link>
+              <Link to="/pomodoro" onClick={() => setIsMenuOpen(false)} className="px-4 py-3 hover:bg-white/10 rounded-lg text-sm font-medium transition-colors focus:bg-white/20 outline-none">Pomodoro</Link>
+              <Link to="/prompter" onClick={() => setIsMenuOpen(false)} className="px-4 py-3 hover:bg-white/10 rounded-lg text-sm font-medium transition-colors focus:bg-white/20 outline-none">Prompter</Link>
+              <Link to="/stopwatch" onClick={() => setIsMenuOpen(false)} className="px-4 py-3 hover:bg-white/10 rounded-lg text-sm font-medium transition-colors focus:bg-white/20 outline-none">Stopwatch</Link>
+              <Link to="/timer" onClick={() => setIsMenuOpen(false)} className="px-4 py-3 hover:bg-white/10 rounded-lg text-sm font-medium transition-colors focus:bg-white/20 outline-none">Timer</Link>
+              <Link to="/world-clock" onClick={() => setIsMenuOpen(false)} className="px-4 py-3 hover:bg-white/10 rounded-lg text-sm font-medium transition-colors focus:bg-white/20 outline-none">World Clock</Link>
               
               <div className="h-px bg-white/10 my-2"></div>
               
               <button 
                 onClick={() => setIsSettingsOpen(true)}
-                className="px-4 py-3 hover:bg-white/10 rounded-lg text-sm font-medium transition-colors flex items-center gap-2 text-left w-full"
+                className="px-4 py-3 hover:bg-white/10 rounded-lg text-sm font-medium transition-colors flex items-center gap-2 text-left w-full focus:bg-white/20 outline-none"
               >
                 <SettingsIcon size={16} />
                 Settings
