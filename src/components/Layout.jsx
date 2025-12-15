@@ -148,6 +148,7 @@ const Layout = () => {
               <Link to="/counter" onClick={() => setIsMenuOpen(false)} className="px-4 py-3 hover:bg-white/10 rounded-lg text-sm font-medium transition-colors focus:bg-white/20 outline-none">Counter</Link>
               <Link to="/message" onClick={() => setIsMenuOpen(false)} className="px-4 py-3 hover:bg-white/10 rounded-lg text-sm font-medium transition-colors focus:bg-white/20 outline-none">Message</Link>
               <Link to="/metronome" onClick={() => setIsMenuOpen(false)} className="px-4 py-3 hover:bg-white/10 rounded-lg text-sm font-medium transition-colors focus:bg-white/20 outline-none">Metronome</Link>
+              <Link to="/password-generator" onClick={() => setIsMenuOpen(false)} className="px-4 py-3 hover:bg-white/10 rounded-lg text-sm font-medium transition-colors focus:bg-white/20 outline-none">Password Generator</Link>
               <Link to="/pomodoro" onClick={() => setIsMenuOpen(false)} className="px-4 py-3 hover:bg-white/10 rounded-lg text-sm font-medium transition-colors focus:bg-white/20 outline-none">Pomodoro</Link>
               <Link to="/prompter" onClick={() => setIsMenuOpen(false)} className="px-4 py-3 hover:bg-white/10 rounded-lg text-sm font-medium transition-colors focus:bg-white/20 outline-none">Prompter</Link>
               <Link to="/stopwatch" onClick={() => setIsMenuOpen(false)} className="px-4 py-3 hover:bg-white/10 rounded-lg text-sm font-medium transition-colors focus:bg-white/20 outline-none">Stopwatch</Link>

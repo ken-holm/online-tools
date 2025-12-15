@@ -11,7 +11,8 @@ import WorldClock from './components/tools/WorldClock';
 import Metronome from './components/tools/Metronome';
 import Calculator from './components/tools/Calculator';
 import Prompter from './components/tools/Prompter';
-import Counter from './components/tools/Counter'; // Import the new Counter component
+import Counter from './components/tools/Counter';
+import PasswordGenerator from './components/tools/PasswordGenerator'; // Import new component
 import Analytics from './components/Analytics';
 
 const NotFound = () => (
@@ -36,7 +37,8 @@ function App() {
           <Route path="metronome" element={<Metronome />} />
           <Route path="calculator" element={<Calculator />} />
           <Route path="prompter" element={<Prompter />} />
-          <Route path="counter" element={<Counter />} /> {/* New Counter Route */}
+          <Route path="counter" element={<Counter />} />
+          <Route path="password-generator" element={<PasswordGenerator />} /> {/* New Route */}
           {/* Future tools will have their routes here */}
           <Route path="*" element={<NotFound />} />
         </Route>
