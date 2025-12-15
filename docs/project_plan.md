@@ -45,7 +45,7 @@
 *   **Text Utilities:** Word count, case converter. (Completed)
 *   **Unit Converter:** Length, weight, temperature, etc. (Completed)
 *   **JSON Formatter:** Prettify and validate JSON. (Completed)
-*   **Markdown Viewer:** Render Markdown to HTML. (In Progress)
+*   **Markdown Viewer:** Render Markdown to HTML. (Completed)
 
 ## 8. Directory Structure
 *   `docs/` - All documentation (except README.md).
