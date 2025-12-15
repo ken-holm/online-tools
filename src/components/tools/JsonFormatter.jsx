@@ -52,10 +52,9 @@ const JsonFormatter = () => {
   const highlightJson = (json) => {
     if (!json) return null;
     const tokens = json.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
-    return tokens.replace(/("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g, function (match) {
-      let cls = 'text-orange-400'; // number
-      if (/^".test(match)) {
-        if (/:$/.test(match)) {
+          return tokens.replace(/("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g, function (match) {
+            let cls = 'text-orange-400'; // number
+            if (/^"/.test(match)) {        if (/:$/.test(match)) {
           cls = 'text-blue-400'; // key
         } else {
           cls = 'text-green-400'; // string
