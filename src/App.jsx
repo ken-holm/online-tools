@@ -17,7 +17,13 @@ import QrCode from './components/tools/QrCode';
 import TextUtilities from './components/tools/TextUtilities';
 import UnitConverter from './components/tools/UnitConverter';
 import JsonFormatter from './components/tools/JsonFormatter';
-import MarkdownViewer from './components/tools/MarkdownViewer'; // Import new component
+import MarkdownViewer from './components/tools/MarkdownViewer';
+import IpSubnetCalculator from './components/tools/IpSubnetCalculator';
+import BandwidthCalculator from './components/tools/BandwidthCalculator';
+import UrlEncoderDecoder from './components/tools/UrlEncoderDecoder';
+import Base64EncoderDecoder from './components/tools/Base64EncoderDecoder';
+import IpValidator from './components/tools/IpValidator';
+import JwtDebugger from './components/tools/JwtDebugger';
 import Analytics from './components/Analytics';
 
 const NotFound = () => (
@@ -48,8 +54,13 @@ function App() {
           <Route path="text-utilities" element={<TextUtilities />} />
           <Route path="unit-converter" element={<UnitConverter />} />
           <Route path="json-formatter" element={<JsonFormatter />} />
-          <Route path="markdown-viewer" element={<MarkdownViewer />} /> {/* New Route */}
-          {/* Future tools will have their routes here */}
+          <Route path="markdown-viewer" element={<MarkdownViewer />} />
+          <Route path="ip-subnet-calculator" element={<IpSubnetCalculator />} />
+          <Route path="bandwidth-calculator" element={<BandwidthCalculator />} />
+          <Route path="url-encoder-decoder" element={<UrlEncoderDecoder />} />
+          <Route path="base64-encoder-decoder" element={<Base64EncoderDecoder />} />
+          <Route path="ip-validator" element={<IpValidator />} />
+          <Route path="jwt-debugger" element={<JwtDebugger />} />
           <Route path="*" element={<NotFound />} />
         </Route>
       </Routes>
