@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { useTheme } from '../../context/ThemeContext';
-import { Scale, RefreshCw } from 'lucide-react';
+import { Scale, RefreshCw, Sparkles } from 'lucide-react';
 import SEO from '../SEO';
 
-// Conversion factors (base unit: meter, gram, celsius, liter)
-const units = {
+// Base units
+const standardUnits = {
   length: {
     meter: 1,
     kilometer: 1000,
@@ -27,13 +27,7 @@ const units = {
     tonne: 1000000,
   },
   temperature: {
-    celsius: 1,
-    fahrenheit: (val) => (val - 32) * 5 / 9, // To Celsius
-    kelvin: (val) => val - 273.15, // To Celsius
-    fromCelsius: {
-      fahrenheit: (val) => (val * 9 / 5) + 32,
-      kelvin: (val) => val + 273.15,
-    },
+    // Special handling for temp
   },
   volume: {
     liter: 1,
@@ -42,12 +36,12 @@ const units = {
     gallon: 3.78541,
     quart: 0.946353,
     pint: 0.473176,
-    cup: 0.24, // Approx
+    cup: 0.24,
     fluidOunce: 0.0295735,
   },
 };
 
-const unitLabels = {
+const standardLabels = {
   length: {
     meter: 'Meter (m)', kilometer: 'Kilometer (km)', centimeter: 'Centimeter (cm)',
     millimeter: 'Millimeter (mm)', micrometer: 'Micrometer (µm)', nanometer: 'Nanometer (nm)',
@@ -68,6 +62,55 @@ const unitLabels = {
   },
 };
 
+const esotericUnits = {
+  length: {
+    furlong: 201.168,
+    league: 4828.03, // 3 miles
+    cubit: 0.4572,
+    hand: 0.1016,
+    lightYear: 9460730472580800,
+    parsec: 30856775814913700,
+    horseLength: 2.4, // Approx
+  },
+  weight: {
+    stone: 6350.29,
+    slug: 14593.9,
+    firkin: 25401.2, // Mass of firkin of butter? Varies. Using ~56lb
+    atomicMassUnit: 1.66054e-24,
+    jupiterMass: 1.898e30,
+  },
+  temperature: {
+    rankine: 'rankine', // Special logic needed
+  },
+  volume: {
+    butt: 476962, // 126 gallons (approx 476L)
+    hogshead: 238481, // 63 gallons
+    dram: 3.69669,
+    teaspoon: 0.00492892,
+    tablespoon: 0.0147868,
+    olympicPool: 2500000,
+  },
+};
+
+const esotericLabels = {
+  length: {
+    furlong: 'Furlong', league: 'League', cubit: 'Cubit', hand: 'Hand',
+    lightYear: 'Light-year', parsec: 'Parsec', horseLength: 'Horse Length',
+  },
+  weight: {
+    stone: 'Stone (st)', slug: 'Slug', firkin: 'Firkin',
+    atomicMassUnit: 'Atomic Mass Unit (u)', jupiterMass: 'Mass of Jupiter',
+  },
+  temperature: {
+    rankine: 'Rankine (°R)',
+  },
+  volume: {
+    butt: 'Butt (Pipe)', hogshead: 'Hogshead', dram: 'Dram',
+    teaspoon: 'Teaspoon (tsp)', tablespoon: 'Tablespoon (tbsp)',
+    olympicPool: 'Olympic Swimming Pool',
+  },
+};
+
 const UnitConverter = () => {
   const { theme } = useTheme();
   const [category, setCategory] = useState('length');
@@ -75,17 +118,39 @@ const UnitConverter = () => {
   const [fromUnit, setFromUnit] = useState('meter');
   const [toUnit, setToUnit] = useState('kilometer');
   const [convertedValue, setConvertedValue] = useState(0);
+  const [isProMode, setIsProMode] = useState(false);
+
+  const activeUnits = useMemo(() => {
+    if (!isProMode) return standardUnits;
+    
+    // Deep merge for Pro Mode
+    const merged = {};
+    Object.keys(standardUnits).forEach(cat => {
+      merged[cat] = { ...standardUnits[cat], ...(esotericUnits[cat] || {}) };
+    });
+    return merged;
+  }, [isProMode]);
+
+  const activeLabels = useMemo(() => {
+    if (!isProMode) return standardLabels;
+    
+    const merged = {};
+    Object.keys(standardLabels).forEach(cat => {
+      merged[cat] = { ...standardLabels[cat], ...(esotericLabels[cat] || {}) };
+    });
+    return merged;
+  }, [isProMode]);
 
   useEffect(() => {
-    // Set default units when category changes
-    const defaultUnits = Object.keys(units[category]);
-    setFromUnit(defaultUnits[0]);
-    setToUnit(defaultUnits[1] || defaultUnits[0]); // Ensure 'to' unit is different if possible
-  }, [category]);
+    // Reset units when category or mode changes if current unit is invalid
+    const currentCatUnits = activeUnits[category] || {};
+    if (!currentCatUnits[fromUnit]) setFromUnit(Object.keys(currentCatUnits)[0]);
+    if (!currentCatUnits[toUnit]) setToUnit(Object.keys(currentCatUnits)[1] || Object.keys(currentCatUnits)[0]);
+  }, [category, isProMode, activeUnits]);
 
   useEffect(() => {
     convert();
-  }, [inputValue, fromUnit, toUnit, category]); // Re-run conversion if any input changes
+  }, [inputValue, fromUnit, toUnit, category, isProMode]);
 
   const convert = () => {
     if (isNaN(inputValue)) {
@@ -97,30 +162,42 @@ const UnitConverter = () => {
     let result;
 
     if (category === 'temperature') {
-      // Convert 'from' to Celsius first
+      // Temp conversion logic
+      // Base: Celsius
       let valueInCelsius;
+      
+      // From -> Celsius
       if (fromUnit === 'celsius') valueInCelsius = value;
-      else if (fromUnit === 'fahrenheit') valueInCelsius = units.temperature.fahrenheit(value);
-      else if (fromUnit === 'kelvin') valueInCelsius = units.temperature.kelvin(value);
+      else if (fromUnit === 'fahrenheit') valueInCelsius = (value - 32) * 5 / 9;
+      else if (fromUnit === 'kelvin') valueInCelsius = value - 273.15;
+      else if (fromUnit === 'rankine') valueInCelsius = (value - 491.67) * 5 / 9;
 
-      // Convert from Celsius to 'to' unit
+      // Celsius -> To
       if (toUnit === 'celsius') result = valueInCelsius;
-      else if (toUnit === 'fahrenheit') result = units.temperature.fromCelsius.fahrenheit(valueInCelsius);
-      else if (toUnit === 'kelvin') result = units.temperature.fromCelsius.kelvin(valueInCelsius);
+      else if (toUnit === 'fahrenheit') result = (valueInCelsius * 9 / 5) + 32;
+      else if (toUnit === 'kelvin') result = valueInCelsius + 273.15;
+      else if (toUnit === 'rankine') result = (valueInCelsius + 273.15) * 9 / 5;
 
     } else {
-      // General conversion for length, weight, volume
-      const fromFactor = units[category][fromUnit];
-      const toFactor = units[category][toUnit];
+      // Standard multiplier logic
+      const fromFactor = activeUnits[category][fromUnit];
+      const toFactor = activeUnits[category][toUnit];
 
       if (fromFactor === undefined || toFactor === undefined) {
-        setConvertedValue('N/A');
-        return;
+        // Fallback or prevent crash
+        return; 
       }
       result = (value * fromFactor) / toFactor;
     }
 
-    setConvertedValue(result.toFixed(4)); // Round to 4 decimal places
+    if (result !== undefined) {
+        // Format nicely for very large/small numbers
+        if (Math.abs(result) > 10000 || (Math.abs(result) < 0.001 && result !== 0)) {
+            setConvertedValue(result.toExponential(4));
+        } else {
+            setConvertedValue(Number(result.toFixed(4)).toString()); // Remove trailing zeros
+        }
+    }
   };
 
   const handleSwapUnits = () => {
@@ -128,23 +205,37 @@ const UnitConverter = () => {
     setToUnit(fromUnit);
   };
 
-  const currentCategoryUnits = units[category];
-  const currentCategoryUnitLabels = unitLabels[category];
+  const currentCategoryUnits = activeUnits[category];
+  const currentCategoryUnitLabels = activeLabels[category];
 
   return (
     <div className={`flex flex-col items-center justify-start min-h-full p-8 w-full max-w-2xl mx-auto ${theme.font}`}>
       <SEO 
         title="Unit Converter" 
-        description="Convert between various units of length, weight, temperature, and volume instantly."
-        keywords="unit converter, online converter, length, weight, temperature, volume, conversion tool"
+        description="Convert between various units of length, weight, temperature, and volume instantly. Includes a Pro Mode for esoteric units."
+        keywords="unit converter, online converter, length, weight, temperature, volume, conversion tool, esoteric units"
       />
-      <h2 className="text-3xl md:text-5xl font-semibold text-white/90 mb-8 drop-shadow-md flex items-center gap-3">
-        <Scale size={40} className="text-blue-400" />
-        Unit Converter
-      </h2>
+      <div className="flex items-center gap-4 mb-8">
+        <h2 className="text-3xl md:text-5xl font-semibold text-white/90 drop-shadow-md flex items-center gap-3">
+          <Scale size={40} className="text-blue-400" />
+          Unit Converter
+        </h2>
+        <button
+          onClick={() => setIsProMode(!isProMode)}
+          className={`p-2 rounded-full transition-all ${isProMode ? 'bg-yellow-500 text-black rotate-12 scale-110 shadow-[0_0_15px_rgba(234,179,8,0.6)]' : 'bg-gray-700 text-gray-400 hover:text-white'}`}
+          title={isProMode ? "Disable Pro Mode" : "Enable Pro Mode (Fun Units)"}
+        >
+          <Sparkles size={20} />
+        </button>
+      </div>
 
-      <div className="bg-gray-800 p-6 rounded-2xl shadow-xl border border-gray-700 w-full space-y-6">
-        
+      <div className="bg-gray-800 p-6 rounded-2xl shadow-xl border border-gray-700 w-full space-y-6 relative overflow-hidden">
+        {isProMode && (
+            <div className="absolute top-0 right-0 p-2 opacity-10 pointer-events-none">
+                <Sparkles size={100} />
+            </div>
+        )}
+
         {/* Category Selection */}
         <div>
           <label htmlFor="category" className="block text-white/80 text-sm font-medium mb-2">Category</label>
@@ -152,10 +243,10 @@ const UnitConverter = () => {
             id="category"
             value={category}
             onChange={(e) => setCategory(e.target.value)}
-            className="w-full p-3 rounded-lg bg-gray-900 border border-gray-600 text-white focus:outline-none focus:border-blue-500"
+            className="w-full p-3 rounded-lg bg-gray-900 border border-gray-600 text-white focus:outline-none focus:border-blue-500 capitalize"
           >
-            {Object.keys(units).map((cat) => (
-              <option key={cat} value={cat} className="capitalize">{cat}</option>
+            {Object.keys(activeUnits).map((cat) => (
+              <option key={cat} value={cat}>{cat}</option>
             ))}
           </select>
         </div>
@@ -181,8 +272,8 @@ const UnitConverter = () => {
               onChange={(e) => setFromUnit(e.target.value)}
               className="w-full p-3 rounded-lg bg-gray-900 border border-gray-600 text-white focus:outline-none focus:border-blue-500"
             >
-              {Object.keys(currentCategoryUnits).map((unit) => (
-                <option key={unit} value={unit}>{currentCategoryUnitLabels[unit]}</option>
+              {currentCategoryUnits && Object.keys(currentCategoryUnits).map((unit) => (
+                <option key={unit} value={unit}>{currentCategoryUnitLabels[unit] || unit}</option>
               ))}
             </select>
           </div>
@@ -208,7 +299,7 @@ const UnitConverter = () => {
               type="text"
               value={convertedValue}
               readOnly
-              className="w-full p-3 rounded-lg bg-gray-900 border border-gray-600 text-white focus:outline-none focus:border-blue-500"
+              className="w-full p-3 rounded-lg bg-gray-900 border border-gray-600 text-white focus:outline-none focus:border-blue-500 font-mono"
             />
           </div>
           <div className="flex-1 w-full">
@@ -219,8 +310,8 @@ const UnitConverter = () => {
               onChange={(e) => setToUnit(e.target.value)}
               className="w-full p-3 rounded-lg bg-gray-900 border border-gray-600 text-white focus:outline-none focus:border-blue-500"
             >
-              {Object.keys(currentCategoryUnits).map((unit) => (
-                <option key={unit} value={unit}>{currentCategoryUnitLabels[unit]}</option>
+              {currentCategoryUnits && Object.keys(currentCategoryUnits).map((unit) => (
+                <option key={unit} value={unit}>{currentCategoryUnitLabels[unit] || unit}</option>
               ))}
             </select>
           </div>
