@@ -3,6 +3,9 @@ import { Outlet, Link, useNavigate } from 'react-router-dom';
 import { useTheme } from '../context/ThemeContext';
 import { Settings as SettingsIcon, Menu, Coffee, Download } from 'lucide-react';
 import Settings from './Settings';
+import MatrixRain from './MatrixRain';
+
+const KONAMI_CODE = ['ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight', 'b', 'a'];
 
 const Layout = () => {
   const { theme } = useTheme();
@@ -10,8 +13,10 @@ const Layout = () => {
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [deferredPrompt, setDeferredPrompt] = useState(null);
+  const [showMatrix, setShowMatrix] = useState(false);
   const hideMenuTimeoutRef = useRef(null);
   const menuRef = useRef(null);
+  const konamiIndex = useRef(0);
 
   useEffect(() => {
     const handler = (e) => {
@@ -22,6 +27,23 @@ const Layout = () => {
     return () => window.removeEventListener('beforeinstallprompt', handler);
   }, []);
 
+  // Konami Code Listener
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.key === KONAMI_CODE[konamiIndex.current]) {
+        konamiIndex.current++;
+        if (konamiIndex.current === KONAMI_CODE.length) {
+          setShowMatrix(true);
+          konamiIndex.current = 0;
+        }
+      } else {
+        konamiIndex.current = 0;
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, []);
+
   const handleInstallClick = async () => {
     if (!deferredPrompt) return;
     deferredPrompt.prompt();
@@ -30,6 +52,7 @@ const Layout = () => {
       setDeferredPrompt(null);
     }
   };
+
 
   const showMenu = () => {
     if (hideMenuTimeoutRef.current) {
@@ -164,6 +187,7 @@ const Layout = () => {
 
   return (
     <>
+      <MatrixRain active={showMatrix} onExit={() => setShowMatrix(false)} />
       {/* Fixed Background Layer */}
       <div className={`fixed inset-0 -z-50 transition-all duration-500 ${theme.background}`} />
 
@@ -219,6 +243,7 @@ const Layout = () => {
               <Link to="/pomodoro" onClick={() => setIsMenuOpen(false)} className="px-4 py-3 hover:bg-white/10 rounded-lg text-sm font-medium transition-colors focus:bg-white/20 outline-none">Pomodoro</Link>
               <Link to="/prompter" onClick={() => setIsMenuOpen(false)} className="px-4 py-3 hover:bg-white/10 rounded-lg text-sm font-medium transition-colors focus:bg-white/20 outline-none">Prompter</Link>
               <Link to="/qr-code" onClick={() => setIsMenuOpen(false)} className="px-4 py-3 hover:bg-white/10 rounded-lg text-sm font-medium transition-colors focus:bg-white/20 outline-none">QR Code</Link>
+              <Link to="/regex-tester" onClick={() => setIsMenuOpen(false)} className="px-4 py-3 hover:bg-white/10 rounded-lg text-sm font-medium transition-colors focus:bg-white/20 outline-none">Regex Tester</Link>
               <Link to="/stopwatch" onClick={() => setIsMenuOpen(false)} className="px-4 py-3 hover:bg-white/10 rounded-lg text-sm font-medium transition-colors focus:bg-white/20 outline-none">Stopwatch</Link>
               <Link to="/text-utilities" onClick={() => setIsMenuOpen(false)} className="px-4 py-3 hover:bg-white/10 rounded-lg text-sm font-medium transition-colors focus:bg-white/20 outline-none">Text Utilities</Link>
               <Link to="/timer" onClick={() => setIsMenuOpen(false)} className="px-4 py-3 hover:bg-white/10 rounded-lg text-sm font-medium transition-colors focus:bg-white/20 outline-none">Timer</Link>

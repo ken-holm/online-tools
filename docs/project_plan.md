@@ -55,8 +55,12 @@
 *   **IPv4/IPv6 Validator:** Regex-based validation to check if an IP address is valid. (Completed)
 *   **MAC Address OUI Lookup:** (If you include a static JSON database) Identify the manufacturer of a network device.
 *   **JWT Debugger:** Decode and inspect JSON Web Tokens (common in network auth). (Completed)
+*   **Regex Tester:** Test regular expressions with highlighting, capture groups, and a built-in cheatsheet. (Completed)
 
 ## 9. Directory Structure
 *   `docs/` - All documentation (except README.md).
 *   `src/` - Application source code.
 *   `public/` - Static assets.
+
+### 10. Hidden Features
+*   Subtle surprises await those who explore the depths of this project.
