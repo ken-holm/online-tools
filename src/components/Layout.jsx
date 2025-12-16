@@ -87,63 +87,24 @@ const Layout = () => {
       if (!isMenuOpen) return;
 
       // Menu Navigation Logic
-      const links = menuRef.current?.querySelectorAll('a');
+      const links = menuRef.current?.querySelectorAll('a, button');
       if (!links) return;
 
-      // Handle simple letter keys
-      if (e.key.length === 1 && /[a-z]/i.test(e.key)) {
-        const char = e.key.toLowerCase();
-        let matchIndex = -1;
-        
-        // Find next match
-        const focusedElement = document.activeElement;
-        let startIndex = 0;
-        
-        // If currently focused on a link, start searching after it
-        Array.from(links).forEach((link, index) => {
-          if (link === focusedElement) startIndex = index + 1;
-        });
-
-        // Search forward from current position
-        for (let i = startIndex; i < links.length + startIndex; i++) {
-          const index = i % links.length;
-          if (links[index].textContent.toLowerCase().startsWith(char)) {
-            matchIndex = index;
-            break;
-          }
-        }
-
-        if (matchIndex !== -1) {
-          links[matchIndex].focus();
-        }
-      }
-    };
-
-    window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [isMenuOpen, isSettingsOpen]);
-
-  // Keyboard Navigation
-  useEffect(() => {
-    const handleKeyDown = (e) => {
-      // Toggle Menu with '/'
-      if (e.key === '/' && !isSettingsOpen) {
+      // Handle Arrow Keys
+      if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
         e.preventDefault();
-        setIsMenuOpen(prev => !prev);
+        const focusedElement = document.activeElement;
+        let index = Array.from(links).indexOf(focusedElement);
+        
+        if (e.key === 'ArrowDown') {
+          index = (index + 1) % links.length;
+        } else {
+          index = (index - 1 + links.length) % links.length;
+        }
+        
+        links[index].focus();
         return;
       }
-
-      // Close menu with Escape
-      if (e.key === 'Escape' && isMenuOpen) {
-        setIsMenuOpen(false);
-        return;
-      }
-
-      if (!isMenuOpen) return;
-
-      // Menu Navigation Logic
-      const links = menuRef.current?.querySelectorAll('a');
-      if (!links) return;
 
       // Handle simple letter keys
       if (e.key.length === 1 && /[a-z]/i.test(e.key)) {
