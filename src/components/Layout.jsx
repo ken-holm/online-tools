@@ -207,6 +207,7 @@ const Layout = () => {
               <Link to="/regex-tester" onClick={() => setIsMenuOpen(false)} className="px-4 py-3 hover:bg-white/10 rounded-lg text-sm font-medium transition-colors focus:bg-white/20 outline-none">Regex Tester</Link>
               <Link to="/stopwatch" onClick={() => setIsMenuOpen(false)} className="px-4 py-3 hover:bg-white/10 rounded-lg text-sm font-medium transition-colors focus:bg-white/20 outline-none">Stopwatch</Link>
               <Link to="/text-utilities" onClick={() => setIsMenuOpen(false)} className="px-4 py-3 hover:bg-white/10 rounded-lg text-sm font-medium transition-colors focus:bg-white/20 outline-none">Text Utilities</Link>
+              <Link to="/tennis-scoring" onClick={() => setIsMenuOpen(false)} className="px-4 py-3 hover:bg-white/10 rounded-lg text-sm font-medium transition-colors focus:bg-white/20 outline-none">Tennis Scoring</Link>
               <Link to="/timer" onClick={() => setIsMenuOpen(false)} className="px-4 py-3 hover:bg-white/10 rounded-lg text-sm font-medium transition-colors focus:bg-white/20 outline-none">Timer</Link>
               <Link to="/unit-converter" onClick={() => setIsMenuOpen(false)} className="px-4 py-3 hover:bg-white/10 rounded-lg text-sm font-medium transition-colors focus:bg-white/20 outline-none">Unit Converter</Link>
               <Link to="/url-encoder-decoder" onClick={() => setIsMenuOpen(false)} className="px-4 py-3 hover:bg-white/10 rounded-lg text-sm font-medium transition-colors focus:bg-white/20 outline-none">URL Encoder/Decoder</Link>

@@ -29,6 +29,7 @@ const Base64EncoderDecoder = lazy(() => import('./components/tools/Base64Encoder
 const IpValidator = lazy(() => import('./components/tools/IpValidator'));
 const JwtDebugger = lazy(() => import('./components/tools/JwtDebugger'));
 const RegexTester = lazy(() => import('./components/tools/RegexTester'));
+const TennisScoring = lazy(() => import('./components/tools/TennisScoring'));
 
 const NotFound = () => (
   <div className="text-center text-red-500 text-3xl font-bold mt-10">404 - Page Not Found</div>
@@ -72,6 +73,7 @@ function App() {
           <Route path="ip-validator" element={<Suspense fallback={<Loading />}><IpValidator /></Suspense>} />
           <Route path="jwt-debugger" element={<Suspense fallback={<Loading />}><JwtDebugger /></Suspense>} />
           <Route path="regex-tester" element={<Suspense fallback={<Loading />}><RegexTester /></Suspense>} />
+          <Route path="tennis-scoring" element={<Suspense fallback={<Loading />}><TennisScoring /></Suspense>} />
           <Route path="*" element={<NotFound />} />
         </Route>
       </Routes>
